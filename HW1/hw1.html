@@ -1,0 +1,112 @@
+<!-- Author(s): Isaiah Mann, Sara Mathieson -->
+<!-- Description: Basic line drawing program -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Snowflake</title>
+
+
+<script>
+    var canvas;    // DOM object corresponding to the canvas
+    var graphics;  // 2D graphics context for drawing on the canvas
+
+    // Draws a line between the specified coordinates, weight parameter is optional
+    function line(x1, y1, x2, y2, color, weight) {
+         if (weight == null)  {
+              weight = 1;
+         }
+         var xWeight;
+         var yWegith;
+         var deltaX = x2 - x1;
+         var deltaY = y2 - y1;
+         var xStep;
+         var yStep;
+         var steps;
+         if (Math.abs(deltaX) >= Math.abs(deltaY)) {
+             xStep = deltaX > 0 ? 1 : -1;
+             yStep = deltaY / deltaX;
+             steps = Math.abs(deltaX);
+             yWeight = weight;
+             xWeight = 1;
+         } else {
+             yStep = deltaY > 0 ? 1 : -1;
+             xStep = -deltaX / deltaY;
+             steps = Math.abs(deltaY);
+             yWeight = 1;
+             xWeight = weight;
+         }
+         var x = x1;
+         var y = y1;
+         for (var i = 0; i < steps; i++) {
+              for (var pixelX = -xWeight/2; pixelX < xWeight/2; pixelX++) {
+                   for (var pixelY = -yWeight/2; pixelY < yWeight/2; pixelY++) {
+                        pixel(x + pixelX, y + pixelY, color);
+                   }
+              }
+              x += xStep;
+              y += yStep;
+         }
+    }
+
+    // Colors a single pixel
+    function pixel (x, y, color) {
+         graphics.fillStyle = color;
+         graphics.fillRect(x, y, 1, 1);
+    }
+
+    // Draws a preset arrangement of lines with center (x, y), size is the diameter, line weight parameter is optional
+    function snowflake(x, y, size, weight) {
+         if (weight == null) {
+              weight = 1;
+         }
+         var radius = size/2;
+         var diagonalRadius = radius/2;
+         line(x, y - radius, x, y + radius, "red", weight);
+         line(x - radius, y, x + radius, y, "blue", weight);
+         line(x - diagonalRadius, y - diagonalRadius, x + diagonalRadius, y + diagonalRadius, "green", weight);
+         line(x - diagonalRadius, y + diagonalRadius, x + diagonalRadius, y - diagonalRadius, "pink", weight);
+    }
+
+    // Draws the shapes to canvas
+    function draw() {
+         var center = getCenter();
+         var bounds = getBounds();
+         graphics.fillStyle = "black";
+         graphics.fillRect(0, 0, bounds.x, bounds.y);
+         snowflake(center.x, center.y, 300, 5);
+         snowflake(center.x - 200, center.y - 100, 150);
+         snowflake(center.x + 200, center.y - 100, 150);
+         snowflake(center.x - 200, center.y + 100, 150);
+         snowflake(center.x + 200, center.y + 100, 150);
+    }
+
+    // Gets the center of the canvas
+    function getCenter () {
+         return {
+              x : canvas.width/2,
+              y : canvas.height/2
+         };
+    }
+
+    // Gets the dimensions of the canvas
+    function getBounds () {
+         return {
+              x : canvas.width,
+              y : canvas.height
+         }
+    }
+
+    function init() {
+        canvas = document.getElementById("theCanvas");
+        graphics = canvas.getContext("2d");
+        draw();
+    }
+</script>
+
+
+</head>
+<body onload="init()">
+    <canvas id="theCanvas" width="640" height="480"></canvas>
+</body>
+</html>

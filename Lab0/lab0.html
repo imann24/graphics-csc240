@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Canvas Graphics</title>
+<script>
+    var canvas;    // DOM object corresponding to the canvas
+    var graphics;  // 2D graphics context for drawing on the canvas
+
+    function getMousePos(canvas, evt) {
+       var rect = canvas.getBoundingClientRect();
+       return {
+         x: evt.clientX - rect.left,
+         y: evt.clientY - rect.top
+       };
+     }
+
+    function draw(x, y) {
+         var rect = canvas.getBoundingClientRect();
+         graphics.fillStyle = "white";
+         graphics.fillRect(0, 0, rect.right, rect.bottom);
+         graphics.fillStyle = "black";
+         graphics.fillText("Hello World", x, y);
+    }
+
+    function init() {
+        canvas = document.getElementById("theCanvas");
+        graphics = canvas.getContext("2d");
+        canvas.addEventListener('mousemove', function(evt) {
+             var mousePos = getMousePos(canvas, evt);
+             draw(mousePos.x, mousePos.y);
+        }, false);
+    }
+</script>
+</head>
+<body onload="init()">
+    <canvas id="theCanvas" width="640" height="480">>/canvas>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Checkerboard</title>
+
+
+<script>
+    var canvas;    // DOM object corresponding to the canvas
+    var graphics;  // 2D graphics context for drawing on the canvas
+
+    function pixColor(x,y, granularity) {
+        if (granularity == null) {
+             granularity = 2;
+        }
+        if (x % granularity < granularity/2 - 1 && y % granularity < granularity/2 - 1) {
+             return "white";
+        } else {
+             return "purple";
+        }
+    }
+
+    function pixel(x, y, color) {
+         graphics.fillStyle = color;
+         graphics.fillRect(x, y, 1, 1);
+    }
+
+    function checkerboard (startX, startY, width, height, squareSize) {
+         if (squareSize == null) {
+              squareSize = 2;
+         }
+         for (var x = startX; x < width; x++) {
+              for (var y = startY; y < height; y++) {
+                   pixel(x, y, pixColor(x, y, squareSize + 1));
+              }
+         }
+    }
+
+    function draw() {
+        checkerboard(0, 0, canvas.width, canvas.height, 10);
+    }
+
+    function init() {
+        canvas = document.getElementById("theCanvas");
+        graphics = canvas.getContext("2d");
+        draw();  // draw something on the canvas
+    }
+</script>
+
+
+</head>
+<body onload="init()">
+    <canvas id="theCanvas" width="450" height="290"></canvas>
+</body>
+</html>

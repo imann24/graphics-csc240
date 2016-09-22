@@ -1,0 +1,227 @@
+<!-- Author: Isaiah Mann -->
+<!-- Co-Authors: Sara Mathieson (Assignment Template), Anna Zhou (Co-Designed Polygon Code in Lab2) -->
+<!-- Description: Implementation of flood and sweep fill algorithms -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Fill Algorithms</title>
+<script>
+    var canvas;    // DOM object corresponding to the canvas
+    var graphics;  // 2D graphics context for drawing on the canvas
+
+    // note: change both for a different background color
+    var backgroundColorRGBA = [255,255,255,255];
+
+    var fillColorRGBA = [0, 0, 0, 0];
+
+    var lineColorRGBA = [0, 0, 0, 0];
+
+    var blueColorRGBA = [0, 0, 255, 255];
+
+    var redColorRGBA = [255, 0, 0, 255];
+
+    var pixelsChecked = null;
+    var maximumFloodFillTolerance = 5;
+
+    function getFillColorFromTuple (colorRGBATuple) {
+         return "rgba" + formatTupleToString(colorRGBATuple);
+    }
+
+    function formatTupleToString (tuple) {
+         var tupleString = "(";
+         for (var i = 0; i < tuple.length; i++) {
+              tupleString += tuple[i];
+              if (i < tuple.length - 1) {
+                   tupleString += ", ";
+              }
+         }
+         return tupleString + ")";
+    }
+    // draws a regular polygon with n sides, centered at (cx,cy), with radius r
+    function regularPolygon(n, cx, cy, r, lineColor) {
+        graphics.strokeStyle = lineColor
+        var theta = 2 * Math.PI / n;
+        graphics.beginPath();
+        graphics.moveTo (r + cx,0 + cy);
+        for (var i = 0; i < n; i++) {
+            var angle = theta * i;
+            x = r * Math.cos(angle) + cx;
+            y = r * Math.sin(angle) + cy;
+            graphics.lineTo(x, y);
+            graphics.moveTo(x, y);
+        }
+        graphics.lineTo (r+cx,0+ cy);
+        graphics.stroke();
+    }
+
+    // fill a shape, starting at the pixel (x,y)
+    // note: make sure to set "fillStyle" to the desired fill color
+    // before calling this function
+    // color parameters should be in RGBA tuples
+    function floodFill(x, y, newColor, oldColor) {
+         // Check if the equation is still within the canvas
+          if (!inCanvasBounds(x, y) || isPixelCheckedByFloodFill(x, y)) {
+               return;
+          }
+          markPixelCheckedByFloodFill(x, y);
+          var currentColor = getPixel(x, y)
+          if (checkForTupleMatch(currentColor, lineColorRGBA)) {
+               return; // base case (hit an edge)
+          }
+		else if (checkForTupleMatch(currentColor, newColor)) {
+               return; // base case (already filled)
+          }
+		else if (checkForTupleMatch(currentColor, oldColor)) {
+               fillPixel(x, y);
+               if (!isPixelCheckedByFloodFill(x, y+1)) {
+                    floodFill(x, y+1, newColor, oldColor) // North
+               }
+               if (!isPixelCheckedByFloodFill(x, y-1)) {
+                    floodFill(x, y-1, newColor, oldColor) // South
+               }
+               if (!isPixelCheckedByFloodFill(x+1, y)) {
+                    floodFill(x+1, y, newColor, oldColor) // West
+               }
+               if (!isPixelCheckedByFloodFill(x-1, y)) {
+                    floodFill(x-1, y, newColor, oldColor) // East
+               }
+          }
+    }
+
+    function initializeFloodFillOptimization () {
+         pixelsChecked = [];
+         for (var x = 0; x < canvas.width; x++) {
+              pixelsChecked.push([]);
+              for (var y = 0; y < canvas.height; y++) {
+                   pixelsChecked[x].push(false);
+              }
+         }
+    }
+
+    function markPixelCheckedByFloodFill (x, y) {
+         if (pixelsChecked[x] == null) {
+              pixelsChecked[x] = [];
+         }
+         pixelsChecked[x][y] = true;
+    }
+
+    function isPixelCheckedByFloodFill (x, y) {
+         if (pixelsChecked[x] == null || [x][y] == null) {
+              return false;
+         } else {
+              return pixelsChecked[x][y];
+         }
+    }
+
+    function sweepFill(x, y, oldColor) {
+         // TODO: Implement this approach
+    }
+
+    function setFillColor(newColorRGBATuple) {
+         fillColorRGB = newColorRGBATuple;
+         graphics.fillStyle = getFillColorFromTuple(fillColorRGB);
+    }
+
+    function checkForTupleMatch (tuple1, tuple2, tolerance) {
+         if (tolerance == null) {
+              tolerance = maximumFloodFillTolerance;
+         }
+         if (checkTupleLengthMatch(tuple1, tuple2)) {
+              var tuplesMatch = true;
+              for (var i = 0; i < tuple1.length; i++) {
+                   tuplesMatch &= Math.abs(tuple1[i] - tuple2[i]) < tolerance;
+                   if (!tuplesMatch) {
+                        return false;
+                   }
+              }
+              return tuplesMatch;
+         } else {
+              return false;
+         }
+    }
+
+    function checkTupleLengthMatch (tuple1, tuple2) {
+         return tuple1.length === tuple2.length;
+    }
+
+    function getMaxTupleDifference (tuple1, tuple2) {
+        if (checkTupleLengthMatch(tuple1, tuple2)) {
+             var maxDifference = 0;
+             for (var i = 0; i < tuple1.length; i++) {
+                  var currentDifference;
+                  if ((currentDifference = Math.abs(tuple1[i] - tuple2[i])) > maxDifference) {
+                       maxDifference = currentDifference;
+                  }
+             }
+             return maxDifference;
+        } else {
+             // For the purposes of this program, non-matching tuple lengths (RGBA vals are invalid)
+             return null;
+        }
+    }
+
+    function setMaximumFloodFillTolerance (newColorRGBATuple, oldColorRGBATuple) {
+         maximumFloodFillTolerance = getMaxTupleDifference(newColorRGBATuple, oldColorRGBATuple) / 2;
+    }
+
+    function setBackgroundColor(newColorRGBATuple) {
+         backgroundColorRGBA = newColorRGBATuple;
+    }
+
+    function performPreOptimizationForFloodFill (newColorRGBATuple, oldColorRGBATuple) {
+         initializeFloodFillOptimization();
+         setMaximumFloodFillTolerance (newColorRGBATuple, oldColorRGBATuple);
+    }
+
+    function drawBackground() {
+         graphics.fillStyle = getFillColorFromTuple(backgroundColorRGBA);
+         graphics.fillRect(0,0,canvas.width,canvas.height);
+    }
+
+    function setLineColor(newColorRGBATuple) {
+         lineColorRGBA = newColorRGBATuple;
+    }
+
+    function inCanvasBounds (x, y) {
+         return (x >= 0 && x <= canvas.width) && (y >= 0 && y <= canvas.height);
+    }
+
+    function colorPixel (x, y, color) {
+         graphics.fillStyle = color;
+         fillPixel(x, y);
+    }
+
+    function fillPixel (x, y) {
+         graphics.fillRect(x, y, 1, 1);
+    }
+
+    function getPixel (x, y) {
+         return graphics.getImageData(x, y, 1, 1).data;
+    }
+
+    function draw() {
+        // make sure to color the background first, since it doesn't have a default color
+        drawBackground();
+        regularPolygon(3, 300, 200, 50, getFillColorFromTuple(redColorRGBA));
+        setFillColor(blueColorRGBA);
+        setLineColor(redColorRGBA);
+        performPreOptimizationForFloodFill(blueColorRGBA, backgroundColorRGBA);
+        floodFill(300, 200, blueColorRGBA, backgroundColorRGBA);
+        // TODO: call your regular polygon function, then fill it from the center
+    }
+
+    function init() {
+        canvas = document.getElementById("theCanvas");
+        graphics = canvas.getContext("2d");
+        draw();  // draw something on the canvas
+   }
+
+</script>
+
+
+</head>
+<body onload="init()">
+    <canvas id="theCanvas" width="450" height="290"></canvas>
+</body>
+</html>
