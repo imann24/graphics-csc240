@@ -36,7 +36,9 @@
          }
          return tupleString + ")";
     }
+
     // draws a regular polygon with n sides, centered at (cx,cy), with radius r
+    // WARNING: fillAsync = false will cause stack overflow unless the shape has a small radius
     function regularPolygon(n, cx, cy, r, lineColor, fillColor, fillAsync) {
         if (fillAsync == null) {
              fillAsync = false;
