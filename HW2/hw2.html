@@ -37,25 +37,31 @@
          return tupleString + ")";
     }
 
-    // draws a regular polygon with n sides, centered at (cx,cy), with radius r
+    // draws a regular polygon with n sides, centered at (centerX,centerY), with radius r
     // WARNING: fillAsync = false will cause stack overflow unless the shape has a small radius
-    function regularPolygon(n, cx, cy, r, lineColor, fillColor, fillAsync) {
+    function drawRegularPolygon(numberOfSides, centerX, centerY, radius, lineColor, fillColor, fillAsync) {
         if (fillAsync == null) {
              fillAsync = false;
         }
-        graphics.strokeStyle = lineColor
-        var theta = 2 * Math.PI / n;
+        var formattedLineColor = getFormattedColorFromTuple(lineColor);
+        var formmatedFillColor = getFormattedColorFromTuple(fillColor);
+        graphics.strokeStyle = formattedLineColor;
+        var theta = 2 * Math.PI / numberOfSides;
         graphics.beginPath();
-        graphics.moveTo (r + cx,0 + cy);
-        for (var i = 0; i < n; i++) {
+        graphics.moveTo (radius + centerX, centerY);
+        for (var i = 0; i < numberOfSides; i++) {
             var angle = theta * i;
-            x = r * Math.cos(angle) + cx;
-            y = r * Math.sin(angle) + cy;
+            x = radius * Math.cos(angle) + centerX;
+            y = radius * Math.sin(angle) + centerY;
             graphics.lineTo(x, y);
             graphics.moveTo(x, y);
         }
-        graphics.lineTo (r+cx,0+ cy);
+        graphics.lineTo (radius + centerX, centerY);
         graphics.stroke();
+        setFillColor(fillColor);
+        setLineColor(lineColor);
+        performPreOptimizationForFloodFill(fillColor, backgroundColorRGBA);
+        floodFill(centerX, centerY, fillColor, backgroundColorRGBA, fillAsync);
     }
 
     // fill a shape, starting at the pixel (x,y)
@@ -235,11 +241,7 @@
     function draw() {
         // make sure to color the background first, since it doesn't have a default color
         drawBackground();
-        regularPolygon(6, 300, 200, 100, getFormattedColorFromTuple(blueColorRGBA));
-        setFillColor(yellowColorRGBA);
-        setLineColor(blueColorRGBA);
-        performPreOptimizationForFloodFill(yellowColorRGBA, backgroundColorRGBA);
-        floodFill(300, 200, yellowColorRGBA, backgroundColorRGBA, true);
+        drawRegularPolygon(6, 300, 200, 100, blueColorRGBA, yellowColorRGBA, true);
     }
 
     function init() {
