@@ -11,13 +11,15 @@
     var graphics;  // 2D graphics context for drawing on the canvas
 
     // note: change both for a different background color
-    var backgroundColorRGBA = [255,255,255,255];
+    var backgroundColorRGBA = [0, 0, 0, 255];
     var fillColorRGBA = [0, 0, 0, 0];
     var lineColorRGBA = [0, 0, 0, 0];
 
     var blueColorRGBA = [0, 0, 255, 255];
     var redColorRGBA = [255, 0, 0, 255];
     var yellowColorRGBA = [255, 255, 0, 255];
+    var greenColorRGBA = [0, 255, 0, 255];
+    var orangeColorRGBA = [255, 165, 0, 255];
 
     var pixelsChecked = null;
     var maximumFloodFillTolerance = 5;
@@ -241,7 +243,10 @@
     function draw() {
         // make sure to color the background first, since it doesn't have a default color
         drawBackground();
-        drawRegularPolygon(6, 300, 200, 100, blueColorRGBA, yellowColorRGBA, true);
+        drawRegularPolygon(6, 250, 200, 100, blueColorRGBA, yellowColorRGBA, true);
+        drawRegularPolygon(5, 100, 100, 50, redColorRGBA, yellowColorRGBA, true);
+        drawRegularPolygon(4, 400, 100, 50, greenColorRGBA, yellowColorRGBA, true);
+        drawRegularPolygon(20, 250, 50, 25, orangeColorRGBA, yellowColorRGBA, true);
     }
 
     function init() {
@@ -255,6 +260,6 @@
 
 </head>
 <body onload="init()">
-    <canvas id="theCanvas" width="450" height="290"></canvas>
+    <canvas id="theCanvas" width="525" height="325"></canvas>
 </body>
 </html>
