@@ -6,6 +6,8 @@
 <html>
 <head>
 <title>Fill Algorithms</title>
+<script src = "point.js"></script>
+<script src = "line.js"></script>
 <script>
     var canvas;    // DOM object corresponding to the canvas
     var graphics;  // 2D graphics context for drawing on the canvas
@@ -155,7 +157,11 @@
     }
 
     function sweepFill(x, y, oldColor) {
-         // TODO: Implement this approach
+         var yMin;
+         var yMax;
+         for (var y = yMin; y < yMax; y++) {
+              // use your own line function to draw lines (precise control)
+         }
     }
 
     function setFillColor(newColorRGBATuple) {
@@ -225,15 +231,6 @@
 
     function inCanvasBounds (x, y) {
          return (x >= 0 && x <= canvas.width) && (y >= 0 && y <= canvas.height);
-    }
-
-    function colorPixel (x, y, color) {
-         graphics.fillStyle = color;
-         fillPixel(x, y);
-    }
-
-    function fillPixel (x, y) {
-         graphics.fillRect(x, y, 1, 1);
     }
 
     function getPixel (x, y) {

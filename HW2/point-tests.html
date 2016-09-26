@@ -1,0 +1,25 @@
+<!-- Author: Isaiah Mann -->
+<!-- Description: Testing util code -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Point Tests</title>
+<script src = "point.js"></script>
+<script>
+     function init() {
+        var pointList = [];
+        pointList.push(new Point(2, 3));
+        pointList.push(new Point(5, 2));
+        pointList.push(new Point(2, 1));
+        console.log(sortPointList(pointList, "y"));
+     }
+
+</script>
+
+
+</head>
+<body onload="init()">
+    <canvas id="theCanvas" width="525" height="325"></canvas>
+</body>
+</html>

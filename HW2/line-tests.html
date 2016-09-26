@@ -1,0 +1,25 @@
+<!-- Author: Isaiah Mann -->
+<!-- Description: Testing util code -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Line Tests</title>
+<script src = "point.js"></script>
+<script src = "line.js"></script>
+<script>
+     function init() {
+          canvas = document.getElementById("theCanvas");
+          graphics = canvas.getContext("2d");
+          pointList = line(100, 100, 200, 200, "red", 1, true);
+          console.log(pointList);
+     }
+
+</script>
+
+
+</head>
+<body onload="init()">
+    <canvas id="theCanvas" width="525" height="325"></canvas>
+</body>
+</html>
