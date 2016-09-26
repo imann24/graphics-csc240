@@ -17,14 +17,19 @@
     var fillColorRGBA = [0, 0, 0, 0];
     var lineColorRGBA = [0, 0, 0, 0];
 
+    var whiteColorRGBA = [255, 255, 255, 255];
     var blueColorRGBA = [0, 0, 255, 255];
     var redColorRGBA = [255, 0, 0, 255];
     var yellowColorRGBA = [255, 255, 0, 255];
     var greenColorRGBA = [0, 255, 0, 255];
-    var orangeColorRGBA = [255, 165, 0, 255];
+    var orangeColorRGBA = [0, 139, 139, 255];
 
     var pixelsChecked = null;
     var maximumFloodFillTolerance = 5;
+
+    var floodFillKey = "Flood Fill";
+    var sweepFillKey = "Sweep Fill";
+    var defaultFillType = floodFillKey;
 
     function getFormattedColorFromTuple (colorRGBATuple) {
          return "rgba" + formatTupleToString(colorRGBATuple);
@@ -43,29 +48,37 @@
 
     // draws a regular polygon with n sides, centered at (centerX,centerY), with radius r
     // WARNING: fillAsync = false will cause stack overflow unless the shape has a small radius
-    function drawRegularPolygon(numberOfSides, centerX, centerY, radius, lineColor, fillColor, fillAsync) {
+    function drawRegularPolygon(numberOfSides, centerX, centerY, radius, lineColor, fillColor, fillType, fillAsync) {
+        if (fillType == null) {
+             fillType = defaultFillType;
+        }
         if (fillAsync == null) {
              fillAsync = false;
         }
         var formattedLineColor = getFormattedColorFromTuple(lineColor);
         var formmatedFillColor = getFormattedColorFromTuple(fillColor);
-        graphics.strokeStyle = formattedLineColor;
+        var pointList = [];
         var theta = 2 * Math.PI / numberOfSides;
-        graphics.beginPath();
-        graphics.moveTo (radius + centerX, centerY);
+        var x = radius + centerX;
+        var y = centerY;
         for (var i = 0; i < numberOfSides; i++) {
+            var prevX = x;
+            var prevY = y;
             var angle = theta * i;
             x = radius * Math.cos(angle) + centerX;
             y = radius * Math.sin(angle) + centerY;
-            graphics.lineTo(x, y);
-            graphics.moveTo(x, y);
+            pointList = pointList.concat(line(prevX, prevY, x, y, formattedLineColor, true));
         }
-        graphics.lineTo (radius + centerX, centerY);
+        pointList = pointList.concat(line(x, y, radius + centerX, centerY, formattedLineColor, true));
         graphics.stroke();
         setFillColor(fillColor);
         setLineColor(lineColor);
-        performPreOptimizationForFloodFill(fillColor, backgroundColorRGBA);
-        floodFill(centerX, centerY, fillColor, backgroundColorRGBA, fillAsync);
+        if (fillType == floodFillKey) {
+             performPreOptimizationForFloodFill(fillColor, backgroundColorRGBA);
+             floodFill(centerX, centerY, fillColor, backgroundColorRGBA, fillAsync);
+        } else if (fillType == sweepFillKey) {
+             sweepFill(pointList, formmatedFillColor, fillAsync);
+        }
     }
 
     // fill a shape, starting at the pixel (x,y)
@@ -156,11 +169,29 @@
          }
     }
 
-    function sweepFill(x, y, oldColor) {
-         var yMin;
-         var yMax;
-         for (var y = yMin; y < yMax; y++) {
-              // use your own line function to draw lines (precise control)
+    function sweepFill(pointList, fillColor, drawAsync) {
+         if (drawAsync == null) {
+              drawAsync = false;
+         }
+         pointList = sortPointList(pointList, yKey);
+         if (fillColor != null) {
+              graphics.fillStyle = fillColor;
+         }
+         var linesDrawn = 0;
+         for (var i = 0; i < pointList.length; i++) {
+             var matchingPoints = getMatchingPoints(pointList[i], pointList, yKey);
+             matchingPoints = sortPointList(matchingPoints, xKey);
+             var minPoint = matchingPoints[0];
+             var maxPoint = matchingPoints[matchingPoints.length - 1];
+             line(minPoint.x, minPoint.y, maxPoint.x, maxPoint.y, null, false, drawAsync);
+         }
+         pointList = sortPointList(pointList, xKey);
+         for (var i = 0; i < pointList.length; i++) {
+             var matchingPoints = getMatchingPoints(pointList[i], pointList, xKey);
+             matchingPoints = sortPointList(matchingPoints, yKey);
+             var minPoint = matchingPoints[0];
+             var maxPoint = matchingPoints[matchingPoints.length - 1];
+             line(minPoint.x, minPoint.y, maxPoint.x, maxPoint.y, null, false, drawAsync);
          }
     }
 
@@ -240,10 +271,23 @@
     function draw() {
         // make sure to color the background first, since it doesn't have a default color
         drawBackground();
-        drawRegularPolygon(6, 250, 200, 100, blueColorRGBA, yellowColorRGBA, true);
-        drawRegularPolygon(5, 100, 100, 50, redColorRGBA, yellowColorRGBA, true);
-        drawRegularPolygon(4, 400, 100, 50, greenColorRGBA, yellowColorRGBA, true);
-        drawRegularPolygon(20, 250, 50, 25, orangeColorRGBA, yellowColorRGBA, true);
+
+        graphics.fillStyle = getFormattedColorFromTuple(whiteColorRGBA);
+        graphics.font = "20px Arial";
+        graphics.fillText("Flood Fill", 100, 100);
+        graphics.fillText("Sweep Fill", 300, 100);
+
+        drawRegularPolygon(6, 150, 200, 100, blueColorRGBA, yellowColorRGBA, floodFillKey, true);
+        drawRegularPolygon(6, 350, 200, 100, blueColorRGBA, yellowColorRGBA, sweepFillKey, true);
+
+        drawRegularPolygon(5, 150, 350, 50, redColorRGBA, yellowColorRGBA, floodFillKey, true);
+        drawRegularPolygon(5, 350, 350, 50, redColorRGBA, yellowColorRGBA, sweepFillKey, true);
+
+        drawRegularPolygon(4, 150, 450, 35, greenColorRGBA, yellowColorRGBA, floodFillKey, true);
+        drawRegularPolygon(4, 350, 450, 35, greenColorRGBA, yellowColorRGBA, sweepFillKey, true);
+
+        drawRegularPolygon(20, 150, 525, 25, orangeColorRGBA, yellowColorRGBA, floodFillKey, true);
+        drawRegularPolygon(20, 350, 525, 25, orangeColorRGBA, yellowColorRGBA, sweepFillKey, true);
     }
 
     function init() {
@@ -257,6 +301,6 @@
 
 </head>
 <body onload="init()">
-    <canvas id="theCanvas" width="525" height="325"></canvas>
+    <canvas id="theCanvas" width="525" height="700"></canvas>
 </body>
 </html>

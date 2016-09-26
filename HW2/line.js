@@ -9,51 +9,73 @@ function colorPixel (x, y, color) {
 }
 
 function fillPixel (x, y) {
-     graphics.fillRect(x, y, 1, 1);
+     graphics.fillRect(Math.round(x), Math.round(y), 1, 1);
+}
+
+function schedulePixel(x, y, delay) {
+     setTimeout(fillPixel, delay, x, y);
 }
 
 // Draws a line between the specified coordinates, weight parameter is optional
-function line(x1, y1, x2, y2, color, weight, trackPixels) {
+// Adapated from Lecture 5 Notes:
+function line(x1, y1, x2, y2, color, trackPixels, drawAsync) {
      if (trackPixels == null) {
           trackPixels = false;
      }
-     if (weight == null)  {
-         weight = 1;
-     }
-
-     var pixelList = [];
-     var xWeight;
-     var yWegith;
-     var deltaX = x2 - x1;
-     var deltaY = y2 - y1;
-     var xStep;
-     var yStep;
-     var steps;
-     graphics.fillStyle.color = color;
-     if (Math.abs(deltaX) >= Math.abs(deltaY)) {
-         xStep = deltaX > 0 ? 1 : -1;
-         yStep = deltaY / deltaX;
-         steps = Math.abs(deltaX);
-         yWeight = weight;
-         xWeight = 1;
+     if (drawAsync == null) {
+          drawAsync = false;
      } else {
-         yStep = deltaY > 0 ? 1 : -1;
-         xStep = -deltaX / deltaY;
-         steps = Math.abs(deltaY);
-         yWeight = 1;
-         xWeight = weight;
+          var drawTime = 0;
+          var timeStep = 1;
      }
-     var x = x1;
-     var y = y1;
-     for (var i = 0; i < steps; i++) {
-         for (var pixelX = -xWeight/2; pixelX < xWeight/2; pixelX++) {
-               for (var pixelY = -yWeight/2; pixelY < yWeight/2; pixelY++) {
-                    pixelList.push(new Point(x, y));
-                    fillPixel(x + pixelX, y + pixelY);
+     if (color != null) {
+          graphics.fillStyle = color;
+     }
+     var pixelList = [];
+     if (Math.abs(x2 - x1) >= Math.abs(y2 - y1)) {
+          var slope = (y2 - y1) / (x2 - x1);
+          var startX = Math.min(x2, x1);
+          var endX = Math.max(x2, x1);
+          var y;
+          if (x1 > x2) {
+               y = y2;
+          } else {
+               y = y1;
+          }
+          for (var x = startX; x <= endX; x++) {
+               if (drawAsync) {
+                    schedulePixel(x, y, drawTime);
+                    drawTime += timeStep;
+               } else {
+                    fillPixel(x, y);
                }
-         }
-         x += xStep;
-         y += yStep;
+               y += slope;
+               if (trackPixels && !isNaN(x) && !isNaN(y)) {
+                    pixelList.push(new Point(x, y));
+               }
+          }
+     } else {
+          var inverseSlope =  (x2 - x1) / (y2 - y1);
+          var startY = Math.min(y2, y1);
+          var endY = Math.max(y2, y1);
+          var x;
+          if (y1 > y2) {
+               x = x2;
+          } else {
+               x = x1;
+          }
+          for (var y = startY; y <= endY; y++) {
+               if (drawAsync) {
+                    schedulePixel(x, y, drawTime);
+                    drawTime += timeStep;
+               } else {
+                    fillPixel(x, y);
+               }
+               x += inverseSlope;
+               if (trackPixels && !isNaN(x) && !isNaN(y)) {
+                    pixelList.push(new Point(x, y));
+               }
+          }
      }
      if (trackPixels) {
           return pixelList;
