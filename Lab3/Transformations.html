@@ -1,0 +1,46 @@
+<!--Authors: Sara Mathieson (Template), Isaiah Mann, Melanie Bancilhon-->
+<!--Description: Lab covering Canvas transformations-->
+<!DOCTYPE html>
+<html>
+<head>
+<title>Transformations</title>
+
+
+<script>
+    var canvas;    // DOM object corresponding to the canvas
+    var graphics;  // 2D graphics context for drawing on the canvas
+    var timer;
+    var angle = 0.1; // we will rotate the cube by this angle each time
+
+    // Draws a circle of cubes around the circle
+    function rotateCube() {
+        graphics.translate(400, 400);
+        graphics.scale(1.5, 1.5);
+        graphics.rotate(angle);
+        graphics.fillRect(100,100,50,50);
+        graphics.scale(2/3, 2/3);
+        graphics.translate(-400, -400);
+    }
+
+    function draw() {
+        // draw a circle for the cube to rotate around
+        graphics.beginPath();
+        graphics.arc(400,400,300,0,2*Math.PI);
+        graphics.stroke();
+    }
+
+    function init() {
+        canvas = document.getElementById("theCanvas");
+        graphics = canvas.getContext("2d");
+        graphics.fillStyle = "blue";
+        draw();  // draw something on the canvas
+        setInterval(rotateCube, 150);
+    }
+</script>
+
+
+</head>
+<body onload="init()">
+    <canvas id="theCanvas" width="800" height="800"></canvas>
+</body>
+</html>
