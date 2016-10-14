@@ -1,3 +1,8 @@
+/*
+ * Author: Isaiah Mann
+ * Description: Draws background without affecting canvas transformations
+ */
+
 function Animator (graphics, canvas) {
      this.graphics = graphics;
      this.canvas = canvas;

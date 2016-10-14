@@ -1,3 +1,8 @@
+/*
+ * Author: Isaiah Mann
+ * Description: Code for drawing shapes
+ */
+
 function Shape (graphics, x, y, color) {
      this.initialize(graphics, x, y, color);
 }

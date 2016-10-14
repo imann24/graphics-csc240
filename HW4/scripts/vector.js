@@ -1,3 +1,8 @@
+/*
+ * Author: Isaiah Mann
+ * Description: Vector operations
+ */
+
 function dotProduct (vector1, vector2) {
      if (vector1.length === vector2.length) {
           var total = 0;

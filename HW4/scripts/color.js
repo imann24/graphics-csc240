@@ -1,3 +1,8 @@
+/*
+ * Author: Isaiah Mann
+ * Description: Stores colors
+ */
+
 function Color (r, g, b, a) {
      this.channels = [Math.round(r), Math.round(g), Math.round(b), a == null ? a : Math.round(a)];
 }
