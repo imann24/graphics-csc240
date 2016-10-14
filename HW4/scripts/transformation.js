@@ -61,6 +61,12 @@ Transform.prototype = {
      get y () {
           return this.currentMatrix[1][2];
      },
+     get xScale () {
+          return this.currentMatrix[0][0];
+     },
+     get yScale () {
+          return this.currentMatrix[1][1];
+     },
 }
 
 Transform.prototype.matrix = function () {
@@ -98,6 +104,21 @@ Transform.prototype.reset = function () {
 
 Transform.prototype.toString = function () {
      return this.currentMatrix.toString();
+}
+
+Transform.prototype.push = function () {
+     this.set(this.currentMatrix);
+}
+
+Transform.prototype.pop = function () {
+     this.set(identityMatrix());
+}
+
+Transform.prototype.set = function (matrix) {
+     this.graphics.setTransform(
+          matrix[0][0], matrix[1][0],
+          matrix[0][1], matrix[1][1],
+          matrix[0][2], matrix[1][2]);
 }
 
 // this function multiplies the current matrix by another transformation,

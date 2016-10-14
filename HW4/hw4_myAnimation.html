@@ -1,0 +1,72 @@
+<!-- Authors: Sara Mathieson (Assignment), Isaiah Mann -->
+<!-- Description: Implementing matrix transformations -->
+<!-- Dependencies: matrix.js, vector.js, transformation.js  -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Custom Animation</title>
+<script src = "scripts/color.js"></script>
+<script src = "scripts/vector.js"></script>
+<script src = "scripts/matrix.js"></script>
+<script src = "scripts/transformation.js"></script>
+<script src = "scripts/animation.js"></script>
+<script src = "scripts/shape.js"></script>
+<script>
+    var canvas;    // DOM object corresponding to the canvas
+    var graphics;  // 2D graphics context for drawing on the canvas
+    var transform // Class to perform transformations
+    var animation; // Class to perform animations
+    var width;
+    var height;
+    var bars = [];
+    var numBars = 10;
+    var barWidth = 50;
+    var startingBarHeight = 200;
+    var minBarHeight = 100;
+    var maxBarHeight = 500;
+    var ySpeed = 0.0001;
+    var yDirections = [];
+    var counter = 0;
+    function draw() {
+         for (var i = 0; i < bars.length; i++) {
+              bars[i].scale(1, bars[i].transform.yScale + yDirections[i]);
+              bars[i].draw();
+              var barHeight = bars[i].getHeight();
+              if (barHeight >= maxBarHeight) {
+                   yDirections[i] = -ySpeed;
+              } else if (barHeight <= minBarHeight) {
+                   yDirections[i] = ySpeed;
+              }
+         }
+    }
+
+    function init() {
+        canvas = document.getElementById("theCanvas");
+        graphics = canvas.getContext("2d");
+        transform = new Transform(graphics);
+        transform.translate(0, 100);
+        animation = new Animator(graphics, canvas);
+        width = canvas.width;
+        height = canvas.width
+        createBars();
+        setInterval(draw, 41);
+    }
+
+    function createBars () {
+         graphics.fillStyle = "black";
+         var x = 0;
+         for (var i = 0; i < numBars; i++) {
+              bars.push(new Rectangle(graphics, x, 0, randomColor(), barWidth, startingBarHeight + randomRange(0, 100)));
+              yDirections.push(ySpeed);
+              x += barWidth;
+         }
+    }
+
+</script>
+
+</head>
+<body onload="init()">
+    <canvas id="theCanvas" width="500" height="600"></canvas>
+</body>
+</html>
