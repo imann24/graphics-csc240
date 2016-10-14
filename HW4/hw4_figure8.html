@@ -1,0 +1,62 @@
+<!-- Authors: Sara Mathieson (Assignment), Isaiah Mann -->
+<!-- Description: Implementing matrix transformations -->
+<!-- Dependencies: matrix.js, vector.js, transformation.js  -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Figure 8</title>
+<script src = "scripts/color.js"></script>
+<script src = "scripts/vector.js"></script>
+<script src = "scripts/matrix.js"></script>
+<script src = "scripts/transformation.js"></script>
+<script src = "scripts/animation.js"></script>
+<script>
+    var canvas;    // DOM object corresponding to the canvas
+    var graphics;  // 2D graphics context for drawing on the canvas
+    var transform // Class to perform transformations
+    var animation; // Class to perform animations
+    var width;
+    var height;
+    var xMin = 0;
+    var yMin = 0;
+    var xMax;
+    var yMax;
+    var shapeWidth = 25;
+    var shapeHeight = 25;
+    var xDir = 1;
+    var yDir = 1;
+
+    function draw() {
+        animation.drawBackground();
+        transform.translate(xDir, yDir);
+        var xProgress = transform.x / (xMax - xMin) * 2;
+        var yProgress = transform.y / (yMax - yMin) * 2;
+        var color = new Color(xProgress * 255, yProgress * 255, xProgress * 127 + yProgress * 127);
+        graphics.fillStyle = color.toString();
+        graphics.fillRect(0, 0, shapeWidth, shapeHeight);
+        if (transform.x >= xMax|| transform.x <= xMin) {
+             xDir *= -1;
+        }
+        yDir = Math.cos(Math.PI * xProgress);
+    }
+
+    function init() {
+        canvas = document.getElementById("theCanvas");
+        graphics = canvas.getContext("2d");
+        transform = new Transform(graphics);
+        transform.translate(0, 100);
+        animation = new Animator(graphics, canvas);
+        width = canvas.width;
+        height = canvas.width
+        xMax = width - shapeWidth;
+        yMax = height - shapeHeight;
+        setInterval(draw, 1);
+    }
+</script>
+
+</head>
+<body onload="init()">
+    <canvas id="theCanvas" width="450" height="300"></canvas>
+</body>
+</html>

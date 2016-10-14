@@ -13,11 +13,7 @@
     var canvas;    // DOM object corresponding to the canvas
     var graphics;  // 2D graphics context for drawing on the canvas
     var transform // Class to perform transformations
-
-    // this GLOBAL variable is responsible for maintaining the current
-    // set of transformations (3x3)
-    var currentMatrix;
-
+    
     function draw() {
         graphics.fillRect(0, 0, 50,50);
     }
@@ -25,12 +21,10 @@
     function init() {
         canvas = document.getElementById("theCanvas");
         graphics = canvas.getContext("2d");
-        transform = new Transformer(graphics);
-        currentMatrix = identityMatrix();
+        transform = new Transform(graphics);
         draw();  // draw something on the canvas
     }
 </script>
-
 
 </head>
 <body onload="init()">

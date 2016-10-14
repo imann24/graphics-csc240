@@ -46,34 +46,59 @@ function shearMatrix (lambda, axis) {
      }
 }
 
-function Transformer (graphics) {
+function Transform (graphics) {
+     this.reset();
      this.graphics = graphics;
 }
+
+Transform.prototype = {
+     get matrix () {
+          return this.currentMatrix;
+     },
+     get x () {
+          return this.currentMatrix[0][2];
+     },
+     get y () {
+          return this.currentMatrix[1][2];
+     },
+}
+
+Transform.prototype.matrix = function () {
+     return this.currentMatrix;
+}
+
 // usually called A
-Transformer.prototype.scale = function (currentMatrix, scaleX, scaleY) {
-     return pushMatrix(this.graphics, currentMatrix, scaleMatrix(scaleX, scaleY));
+Transform.prototype.scale = function (scaleX, scaleY) {
+     this.currentMatrix = pushMatrix(this.graphics, this.currentMatrix, scaleMatrix(scaleX, scaleY));
 }
 
 // usually called R
-Transformer.prototype.rotate = function (currentMatrix, theta) {
-     return pushMatrix(this.graphics, currentMatrix, rotateMatrix(theta));
+Transform.prototype.rotate = function (theta) {
+     this.currentMatrix = pushMatrix(this.graphics, this.currentMatrix, rotateMatrix(theta));
 }
 
 // usually called T
-Transformer.prototype.translate = function (currentMatrix, translateX, translateY) {
-     return pushMatrix(this.graphics, currentMatrix, translateMatrix(translateX, translateY));
+Transform.prototype.translate = function (translateX, translateY) {
+     this.currentMatrix = pushMatrix(this.graphics, this.currentMatrix, translateMatrix(translateX, translateY));
 }
 
 // usually called F
-Transformer.prototype.reflection = function (currentMatrix, axis) {
-     return pushMatrix(this.graphics, currentMatrix, reflectionMatrix(axis));
+Transform.prototype.reflect = function (axis) {
+     this.currentMatrix = pushMatrix(this.graphics, this.currentMatrix, reflectionMatrix(axis));
 }
 
 // usually c
-Transformer.prototype.shear = function (currentMatrix, lambda, axis) {
-     return pushMatrix(this.graphics, currentMatrix, shearMatrix(lambda, axis));
+Transform.prototype.shear = function (lambda, axis) {
+     this.currentMatrix = pushMatrix(this.graphics, this.currentMatrix, shearMatrix(lambda, axis));
 }
 
+Transform.prototype.reset = function () {
+     this.currentMatrix = identityMatrix();
+}
+
+Transform.prototype.toString = function () {
+     return this.currentMatrix.toString();
+}
 
 // this function multiplies the current matrix by another transformation,
 // then updates the current matrix to the result
