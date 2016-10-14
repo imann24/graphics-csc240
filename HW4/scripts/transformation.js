@@ -62,10 +62,10 @@ Transform.prototype = {
           return this.currentMatrix[1][2];
      },
      get xScale () {
-          return this.currentMatrix[0][0];
+          return Math.abs(this.currentMatrix[0][0]);
      },
      get yScale () {
-          return this.currentMatrix[1][1];
+          return Math.abs(this.currentMatrix[1][1]);
      },
 }
 

@@ -13,6 +13,7 @@
 <script src = "scripts/animation.js"></script>
 <script src = "scripts/shape.js"></script>
 <script>
+
     var canvas;    // DOM object corresponding to the canvas
     var graphics;  // 2D graphics context for drawing on the canvas
     var transform // Class to perform transformations
@@ -20,23 +21,30 @@
     var width;
     var height;
     var bars = [];
-    var numBars = 10;
+    var barLayers = 3;
+    var numBars = 20;
     var barWidth = 50;
     var startingBarHeight = 200;
-    var minBarHeight = 100;
-    var maxBarHeight = 500;
-    var ySpeed = 0.0001;
-    var yDirections = [];
+    var minYSpeed = 1.01;
+    var maxYSpeed = 1.07;
+    var yScales = [];
+    var ySpeeds = [];
+    var yScaleDirections = [];
+    var maxYScale = 3.25;
+    var minYScale = 0.25;
     var counter = 0;
+
     function draw() {
+         animation.drawBackground();
          for (var i = 0; i < bars.length; i++) {
-              bars[i].scale(1, bars[i].transform.yScale + yDirections[i]);
+              bars[i].scale(1, yScales[i]);
               bars[i].draw();
               var barHeight = bars[i].getHeight();
-              if (barHeight >= maxBarHeight) {
-                   yDirections[i] = -ySpeed;
-              } else if (barHeight <= minBarHeight) {
-                   yDirections[i] = ySpeed;
+              console.log(bars[i].transform.yScale);
+              if (bars[i].transform.yScale >= maxYScale) {
+                   yScales[i] = 1 / ySpeeds[i];
+              } else if (bars[i].transform.yScale <= minYScale) {
+                   yScales[i] = ySpeeds[i];
               }
          }
     }
@@ -56,10 +64,16 @@
     function createBars () {
          graphics.fillStyle = "black";
          var x = 0;
-         for (var i = 0; i < numBars; i++) {
-              bars.push(new Rectangle(graphics, x, 0, randomColor(), barWidth, startingBarHeight + randomRange(0, 100)));
-              yDirections.push(ySpeed);
+         for (var i = 0; i < numBars * barLayers; i++) {
+              bars.push(new Rectangle(graphics, x, 0, randomColor(), barWidth, startingBarHeight));
+              yScales[i] = Math.random() * maxYScale;
+              ySpeeds[i] = randomRangef(minYSpeed, maxYSpeed);
               x += barWidth;
+              bars[i].rotate(Math.PI);
+              bars[i].translate(-1000, -600);
+              if (i % numBars == 0) {
+                   x = 0;
+              }
          }
     }
 
@@ -67,6 +81,6 @@
 
 </head>
 <body onload="init()">
-    <canvas id="theCanvas" width="500" height="600"></canvas>
+    <canvas id="theCanvas" width="1000" height="600"></canvas>
 </body>
 </html>
