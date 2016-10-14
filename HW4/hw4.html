@@ -12,36 +12,22 @@
 <script>
     var canvas;    // DOM object corresponding to the canvas
     var graphics;  // 2D graphics context for drawing on the canvas
+    var transform // Class to perform transformations
 
     // this GLOBAL variable is responsible for maintaining the current
     // set of transformations (3x3)
     var currentMatrix;
 
-    // this function multiplies the current matrix by another transformation,
-    // then updates the current matrix to the result
-    function pushMatrix(newMatrix) {
-        currMatrix = matrixMultiply(currMatrix, newMatrix); // order very important!
-
-        // note that the setTransform method clear the current matrix and then
-        // sets it to be this new one (it does not build up the transformations!)
-        graphics.setTransform(currMatrix[0][0],currMatrix[1][0],
-                           currMatrix[0][1],currMatrix[1][1],
-                           currMatrix[0][2],currMatrix[1][2]);
-    }
-
     function draw() {
-        graphics.fillRect(0,0,50,50);
+        graphics.fillRect(0, 0, 50,50);
     }
 
     function init() {
         canvas = document.getElementById("theCanvas");
         graphics = canvas.getContext("2d");
-
-        draw();  // draw something on the canvas
+        transform = new Transformer(graphics);
         currentMatrix = identityMatrix();
-        matrix1 = new Matrix([[2, 3], [5, 10]]);
-        matrix2 = new Matrix([[2, 3], [5, 10]]);
-        matrix3 = matrixMultiply(matrix1, matrix2);
+        draw();  // draw something on the canvas
     }
 </script>
 

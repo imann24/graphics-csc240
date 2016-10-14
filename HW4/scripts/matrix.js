@@ -36,6 +36,24 @@ Matrix.prototype.column = function (columnIndex) {
      return this[columnIndex];
 }
 
+Matrix.prototype.toString = function () {
+     var matrixAsString = "";
+     for (var y = 0; y < this.rows; y++) {
+          matrixAsString += "[";
+          for (var x = 0; x < this.columns; x++) {
+               matrixAsString += this[x][y];
+               if (x < this.columns - 1) {
+                    matrixAsString += " ";
+               }
+          }
+          matrixAsString += "]";
+          if (y < this.rows - 1) {
+               matrixAsString += "\n";
+          }
+     }
+     return matrixAsString;
+}
+
 function identityMatrix () {
      return new Matrix([[1, 0, 0], [0, 1, 0], [0, 0, 1]]);
 }
