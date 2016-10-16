@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Bezier Curves</title>
+<script src = "scripts/bezier.js"></script>
+<script>
+    var canvas;    // DOM object corresponding to the canvas
+    var graphics;  // 2D graphics context for drawing on the canvas
+    var pen;
+
+    function draw() {
+
+        // set up control points
+        var p0 = [200, 110];
+        var p1 = [200, 300];
+
+        var r1 = [30, 50];
+
+        var q1 = [300,50];
+        var q2 = [330,140];
+
+        // draw 3 bezier curves, all starting at p0 and ending at p1
+        pen.bezierLine(p0, p1);
+        pen.bezierQuad(p0, r1, p1);
+        pen.bezierCubic(p0, q1, q2, p1);
+        // notice the difference between the quadratic and cubic curves
+    }
+
+    function init() {
+        canvas = document.getElementById("theCanvas");
+        graphics = canvas.getContext("2d");
+        pen = new BezierDraw(graphics);
+        draw();  // draw something on the canvas
+    }
+</script>
+
+
+</head>
+<body onload="init()">
+    <canvas id="theCanvas" width="640" height="480"></canvas>
+</body>
+</html>
