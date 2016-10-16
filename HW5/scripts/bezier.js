@@ -1,3 +1,8 @@
+/*
+ * Author: Isaiah Mann
+ * Description Functions relating to drawing bezier curves
+ */
+
 function BezierDraw (graphics) {
      this.graphics = graphics;
 }
