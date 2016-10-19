@@ -1,12 +1,12 @@
 /*
  * Author: Isaiah Mann
- * Description: Functions relating to drawing bezier curves
+ * Description: Class containing functions for drawing bezier curves
  * Dependencies: point.js
  */
 
-function BezierDraw (graphics) {
+function BezierDraw (graphics, levelOfDetail) {
      this.graphics = graphics;
-     this.setPointsPerLine(100);
+     this.setPointsPerLine(levelOfDetail);
 }
 
 BezierDraw.prototype.setPointsPerLine = function (pointsPerLine) {
@@ -41,15 +41,18 @@ BezierDraw.prototype.bezierQuad = function (point0, point1, point2) {
 }
 
 BezierDraw.prototype.bezierQuadHelper = function (time, points, draw) {
-	var pointA = draw.bezierLineHelper(time, points);
-	var pointB = draw.bezierLineHelper(time, points);
+	var pointA = draw.bezierLineHelper(time, [points[0], points[1]]);
+	var pointB = draw.bezierLineHelper(time, [points[1], points[2]]);
 	return draw.bezierLineHelper(time, [pointA, pointB]);
 }
 
 BezierDraw.prototype.bezierCubic = function (point0, point1, point2, point3) {
-     console.log("Drawing a cubic");
+	this.draw([point0, point1, point2, point3], this.bezierCubicHelper);
 }
 
-BezierDraw.prototype.bezierCubicHelper = function (time, point0, point1, point2, point3) {
-	
+BezierDraw.prototype.bezierCubicHelper = function (time, points, draw) {
+	var pointA = draw.bezierLineHelper(time, [points[0], points[1]]);
+	var pointB = draw.bezierLineHelper(time, [points[1], points[2]]);
+	var pointC = draw.bezierLineHelper(time, [points[2], points[3]]);
+	return draw.bezierQuadHelper(time, [pointA, pointB, pointC], draw);
 }

@@ -7,8 +7,8 @@ var yKey = "y";
 var xKey = "x";
 
 function Point (x, y) {
-     this.x = isNaN(x) ? 0 : Math.round(x);
-     this.y = isNaN(y) ? 0 : Math.round(y);
+     this.x = isNaN(x) ? 0 : x;
+     this.y = isNaN(y) ? 0 : y;
 };
 
 function comparePointX (point1, point2) {

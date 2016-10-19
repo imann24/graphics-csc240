@@ -11,6 +11,7 @@
     var canvas;    // DOM object corresponding to the canvas
     var graphics;  // 2D graphics context for drawing on the canvas
     var pen;
+    var levelOfDetail = 500;
 
     function draw() {
 
@@ -33,7 +34,7 @@
     function init() {
         canvas = document.getElementById("theCanvas");
         graphics = canvas.getContext("2d");
-        pen = new BezierDraw(graphics);
+        pen = new BezierDraw(graphics, levelOfDetail);
         draw();  // draw something on the canvas
     }
 </script>
