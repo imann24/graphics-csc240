@@ -11,6 +11,14 @@ function Point (x, y) {
      this.y = isNaN(y) ? 0 : y;
 };
 
+Point.prototype.translate = function (x, y) {
+     return new Point(this.x + x, this.y + y);
+}
+
+Point.prototype.add = function (otherPoint) {
+     return new Point(this.x + otherPoint.x, this.y + otherPoint.y);
+}
+
 function comparePointX (point1, point2) {
      if (point1.x > point2.x) {
           return 1;

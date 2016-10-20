@@ -1,0 +1,40 @@
+<!-- Authors: Isaiah Mann -->
+<!-- Description: Demonstrations of letters with bezier curves -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Bezier Letters</title>
+<script src = "scripts/point.js"></script>
+<script src = "scripts/bezier.js"></script>
+<script src = "scripts/letter.js"></script>
+<script>
+    var canvas;    // DOM object corresponding to the canvas
+    var graphics;  // 2D graphics context for drawing on the canvas
+    var pen;
+    var levelOfDetail = 500;
+    var letterHeight = 100;
+    var letterWidth = 75;
+    function draw(letters) {
+        for (var i = 0; i < letters.length; i++) {
+            letters[i].draw();
+        }
+    }
+
+    function init() {
+        canvas = document.getElementById("theCanvas");
+        graphics = canvas.getContext("2d");
+        pen = new BezierDraw(graphics, levelOfDetail);
+        var i1 = new ILetter(pen, new Point(100, 100), letterHeight, letterWidth);
+        var s1 = new SLetter(pen, new Point(200, 100), letterHeight, letterWidth);
+        draw([i1, s1]);  // draw something on the canvas
+        
+    }
+</script>
+
+
+</head>
+<body onload="init()">
+    <canvas id="theCanvas" width="640" height="480"></canvas>
+</body>
+</html>
