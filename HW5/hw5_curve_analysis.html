@@ -1,0 +1,142 @@
+<!-- Authors: Isaiah Mann -->
+<!-- Description: Compare how close bezier curves are to a circle -->
+
+<!DOCTYPE html>
+<html>
+     <head>
+          <title>Bezier Curve Analysis</title>
+          <script src = "scripts/point.js"></script>
+          <script src = "scripts/bezier.js"></script>
+          <script src = "scripts/letter.js"></script>
+          <script>
+              var canvas;    // DOM object corresponding to the canvas
+              var graphics;  // 2D graphics context for drawing on the canvas
+              var pen;
+              var levelOfDetail = 500;
+              var coordinates = {};
+
+             function init() {
+                  canvas = document.getElementById("theCanvas");
+                  graphics = canvas.getContext("2d");
+                  pen = new BezierDraw(graphics, levelOfDetail);
+                  draw();  // draw something on the canvas
+                  coordinates["s1x"] = new Point(100, 100);
+                  coordinates["c1x"] = new Point(150, 200);
+                  coordinates["e1x"] = new Point(300, 300);
+              }
+
+              function update () {
+                  draw();
+              }
+
+             function draw () {
+
+             }
+          </script>
+          <style>
+               input {
+                    width: 2.5em;
+               }
+               input.button {
+                    width: 7.5em;
+                    background-color: #33b3dd;
+                    color: white;
+                    font-size: 2em;
+                    margin-left: 4em;
+                    margin-top: 1em
+               }
+          </style>
+     </head>
+     <body onload="init()">
+         <canvas id="theCanvas" width="800" height="480"></canvas>
+         <form action="demo_form.asp">
+              <table>
+                    <tr>
+                         <th>Curve 1</th>
+                         <td>
+                              <u>Start</u>
+                              (<input type="text" name="s1x">,
+                              <input type="text" name="s1y">)
+                              <br>
+                         </td>
+                         <td>
+                              <u>Control Point</u>
+                              (<input type="text" name="c1x">,
+                              <input type="text" name="c1y">)
+                              <br>
+                         </td>
+                         <td>
+                              <u>End</u>
+                              (<input type="text" name="e1x">,
+                              <input type="text" name="e1y">)
+                              <br>
+                         </td>
+                    </tr>
+                    <tr>
+                         <th>Curve 2</th>
+                         <td>
+                              <u>Start</u>
+                              (<input type="text" name="s2x">,
+                              <input type="text" name="s2y">)
+                              <br>
+                         </td>
+                         <td>
+                              <u>Control Point</u>
+                              (<input type="text" name="c2x">,
+                              <input type="text" name="c2y">)
+                              <br>
+                         </td>
+                         <td>
+                              <u>End</u>
+                              (<input type="text" name="e2x">,
+                              <input type="text" name="e2y">)
+                              <br>
+                         </td>
+                    </tr>
+                    <tr>
+                         <th>Curve 3</th>
+                         <td>
+                              <u>Start</u>
+                              (<input type="text" name="s3x">,
+                              <input type="text" name="s3y">)
+                              <br>
+                         </td>
+                         <td>
+                              <u>Control Point</u>
+                              (<input type="text" name="c3x">,
+                              <input type="text" name="c3y">)
+                              <br>
+                         </td>
+                         <td>
+                              <u>End</u>
+                              (<input type="text" name="e3x">,
+                              <input type="text" name="e3y">)
+                              <br>
+                         </td>
+                    </tr>
+                    <tr>
+                         <th>Curve 4</th>
+                         <td>
+                              <u>Start</u>
+                              (<input type="text" name="s4x">,
+                              <input type="text" name="s4y">)
+                              <br>
+                         </td>
+                         <td>
+                              <u>Control Point</u>
+                              (<input type="text" name="c4x">,
+                              <input type="text" name="c4y">)
+                              <br>
+                         </td>
+                         <td>
+                              <u>End</u>
+                              (<input type="text" name="e4x">,
+                              <input type="text" name="e4y">)
+                              <br>
+                         </td>
+                    </tr>
+               </table>
+               <input class = "button" type="button" value="Update" onclick="update()">
+          </form>
+     </body>
+</html>
