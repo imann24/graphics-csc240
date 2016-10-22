@@ -33,8 +33,6 @@ BezierDraw.prototype.bezierLineHelper = function (time, points) {
 }
 
 BezierDraw.prototype.bezierLine = function (point0, point1) {
-	console.log(point0);
-	console.log(point1);
   	this.draw([point0, point1], this.bezierLineHelper);
 }
 
