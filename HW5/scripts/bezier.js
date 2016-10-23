@@ -15,15 +15,23 @@ BezierDraw.prototype.setPointsPerLine = function (pointsPerLine) {
 
 
 BezierDraw.prototype.draw = function (points, coordinateHelper) {
-	this.graphics.beginPath();
-    var previousPoint = points[0];
-    for (var i = 1; i < this.pointsPerLine; i++) {
-    	this.graphics.moveTo(previousPoint.x, previousPoint.y);
-    	var currentPoint = coordinateHelper(i / (this.pointsPerLine - 1), points, this);
-    	this.graphics.lineTo(currentPoint.x, currentPoint.y);
-    	previousPoint = currentPoint;
+     // Tracks which points it draws and returns them (used for curve analysis)
+     var drawPoints = [];
+     this.graphics.beginPath();
+     var previousPoint = points[0];
+     for (var i = 1; i < this.pointsPerLine; i++) {
+    	     this.graphics.moveTo(previousPoint.x, previousPoint.y);
+    	     var currentPoint = coordinateHelper(i / (this.pointsPerLine - 1), points, this);
+    	     this.graphics.lineTo(currentPoint.x, currentPoint.y);
+    	     previousPoint = currentPoint;
+          drawPoints.push(currentPoint);
  	}
  	this.graphics.stroke();
+     return drawPoints;
+}
+
+BezierDraw.prototype.bezierLine = function (point0, point1) {
+  	return this.draw([point0, point1], this.bezierLineHelper);
 }
 
 BezierDraw.prototype.bezierLineHelper = function (time, points) {
@@ -32,12 +40,8 @@ BezierDraw.prototype.bezierLineHelper = function (time, points) {
 	return new Point(x, y);
 }
 
-BezierDraw.prototype.bezierLine = function (point0, point1) {
-  	this.draw([point0, point1], this.bezierLineHelper);
-}
-
 BezierDraw.prototype.bezierQuad = function (point0, point1, point2) {
-    this.draw([point0, point1, point2], this.bezierQuadHelper);
+    return this.draw([point0, point1, point2], this.bezierQuadHelper);
 }
 
 BezierDraw.prototype.bezierQuadHelper = function (time, points, draw) {
@@ -47,7 +51,7 @@ BezierDraw.prototype.bezierQuadHelper = function (time, points, draw) {
 }
 
 BezierDraw.prototype.bezierCubic = function (point0, point1, point2, point3) {
-	this.draw([point0, point1, point2, point3], this.bezierCubicHelper);
+	return this.draw([point0, point1, point2, point3], this.bezierCubicHelper);
 }
 
 BezierDraw.prototype.bezierCubicHelper = function (time, points, draw) {

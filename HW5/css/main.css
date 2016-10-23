@@ -3,14 +3,21 @@
  * Description: Style guide for the curve analysis
  */
 
+#percentMatch {
+     font-family: sans-serif;
+     position: absolute;
+     bottom: 1em;
+     left: 50%;
+}
+
 input.horizontalSlider {
-     width: 7.5em;
+     width: 8em;
 }
 
 input.verticalSlider {
      -webkit-appearance: slider-vertical;
      writing-mode: bt-lr;
-     height: 7.5em;
+     height: 8em;
 }
 
 input.button {
@@ -27,31 +34,34 @@ td {
 }
 
 table#topLeftCurve {
+     border: 3px solid blue;
      position: absolute;
      top: 1em;
      left: 1em;
 }
 
 table#topRightCurve {
+     border: 3px solid orange;
      position: absolute;
      top: 1em;
      right: 1em;
 }
 
 table#bottomLeftCurve {
+     border: 3px solid red;
      position: absolute;
      bottom: 1em;
      left: 1em;
 }
 
 table#bottomRightCurve {
+     border: 3px solid green;
      position: absolute;
      bottom: 1em;
      right: 1em;
 }
 
 table {
-     border: 3px solid black;
-     padding: 1em;
+     padding: 0.5em;
      transition: max-height 0.15s ease-out;
 }

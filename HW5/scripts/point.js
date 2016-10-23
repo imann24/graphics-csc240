@@ -19,6 +19,10 @@ Point.prototype.add = function (otherPoint) {
      return new Point(this.x + otherPoint.x, this.y + otherPoint.y);
 }
 
+Point.prototype.valueOf = function () {
+     return "x" + Math.round(this.x / 2) * 2+ "y" + Math.round(this.y / 2) * 2;
+}
+
 function comparePointX (point1, point2) {
      if (point1.x > point2.x) {
           return 1;

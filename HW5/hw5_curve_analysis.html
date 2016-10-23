@@ -27,6 +27,7 @@
                   </div>
              </label>
               <canvas id="theCanvas" width="800" height="800"></canvas>
+              <h1 id = "percentMatch">0%</h1>
          </center>
          <form>
               <table id = "topLeftCurve">
@@ -36,13 +37,13 @@
                     <tr>
                          <td>
                               <output for="x0" id="x0label">x: 200</output><br>
-                              <input type="range" id="x0" min="-200" value="200" max="1000" step="10" oninput="updateCurve(0, 'x0', value)"
+                              <input type="range" id="x0" min="-200" value="200" max="1000" step="1" oninput="updateCurve(0, 'x0', value)"
                               class = "horizontalSlider">
                          </td>
                     </tr>
                     <tr>
                          <td>
-                              <input type="range" id="y0" min="-200" value="200" max="1000" step="10" oninput="updateCurve(0, 'y0', value)"
+                              <input type="range" id="y0" min="-200" value="200" max="1000" step="1" oninput="updateCurve(0, 'y0', value)"
                               class = "verticalSlider" orient = "vertical">
                               <output for="y0" id="y0label">y: 200</output>
 
@@ -54,13 +55,13 @@
                      <tr class = "toggleable">
                           <td>
                                <output for="x0b" id="x0blabel">x: 200</output><br>
-                               <input type="range" id="x0b" min="-200" value="200" max="1000" step="10" oninput="updateCurve(4, 'x0b', value)"
+                               <input type="range" id="x0b" min="-200" value="200" max="1000" step="1" oninput="updateCurve(4, 'x0b', value)"
                                class = "horizontalSlider">
                           </td>
                      </tr>
                      <tr class = "toggleable">
                           <td>
-                               <input type="range" id="y0b" min="-200" value="200" max="1000" step="10" oninput="updateCurve(4, 'y0b', value)"
+                               <input type="range" id="y0b" min="-200" value="200" max="1000" step="1" oninput="updateCurve(4, 'y0b', value)"
                                class = "verticalSlider" orient = "vertical">
                                <output for="y0b" id="y0blabel">y: 200</output>
 
@@ -113,7 +114,7 @@
                     </tr>
                     <tr class = "toggleable">
                          <td>
-                              <input type="range" id="x2" min="-200" value="200" max="1000" step="10" oninput="updateCurve(2, 'x2', value)"
+                              <input type="range" id="x2" min="-200" value="200" max="1000" step="1" oninput="updateCurve(2, 'x2', value)"
                               class = "horizontalSlider">
                               <br>
                               <output for="x2" id="x2label">x: 200</output>
@@ -121,7 +122,7 @@
                     </tr>
                     <tr class = "toggleable">
                          <td>
-                              <input type="range" id="y2" min="-200" value="200" max="1000" step="10" oninput="updateCurve(2, 'y2', value)"
+                              <input type="range" id="y2" min="-200" value="200" max="1000" step="1" oninput="updateCurve(2, 'y2', value)"
                               class = "verticalSlider" orient = "vertical">
                               <output for="y2" id="y2label">y: 200</output>
 
@@ -133,7 +134,7 @@
                     <tr>
                          <td>
 
-                              <input type="range" id="x2b" min="-200" value="200" max="1000" step="10" oninput="updateCurve(6, 'x2b', value)"
+                              <input type="range" id="x2b" min="-200" value="200" max="1000" step="1" oninput="updateCurve(6, 'x2b', value)"
                               class = "horizontalSlider">
                               <br>
                               <output for="x2b" id="x2blabel">x: 200</output>
@@ -141,7 +142,7 @@
                     </tr>
                     <tr>
                          <td>
-                              <input type="range" id="y2b" min="-200" value="200" max="1000" step="10" oninput="updateCurve(6, 'y2b', value)"
+                              <input type="range" id="y2b" min="-200" value="200" max="1000" step="1" oninput="updateCurve(6, 'y2b', value)"
                               class = "verticalSlider" orient = "vertical">
                               <output for="y2b" id="y2blabel">y: 200</output>
 
@@ -156,7 +157,7 @@
 
                          <td>
 
-                              <input type="range" id="x3" min="-200" value="200" max="1000" step="10" oninput="updateCurve(3, 'x3', value)"
+                              <input type="range" id="x3" min="-200" value="200" max="1000" step="1" oninput="updateCurve(3, 'x3', value)"
                               class = "horizontalSlider">
                               <br>
                               <output for="x3" id="x3label">x: 200</output>
@@ -164,7 +165,7 @@
                     </tr>
                     <tr class = "toggleable">
                          <td>
-                              <input type="range" id="y3" min="-200" value="200" max="1000" step="10" oninput="updateCurve(3, 'y3', value)"
+                              <input type="range" id="y3" min="-200" value="200" max="1000" step="1" oninput="updateCurve(3, 'y3', value)"
                               class = "verticalSlider" orient = "vertical">
                               <output for="y3" id="y3label">y: 200</output>
 
@@ -174,7 +175,7 @@
                     <tr>
                          <td>
 
-                              <input type="range" id="x3b" min="-200" value="200" max="1000" step="10" oninput="updateCurve(7, 'x3b', value)"
+                              <input type="range" id="x3b" min="-200" value="200" max="1000" step="1" oninput="updateCurve(7, 'x3b', value)"
                               class = "horizontalSlider">
                               <br>
                               <output for="x3b" id="x3blabel">x: 200</output>
@@ -182,7 +183,7 @@
                     <tr>
                     </tr>
                          <td>
-                              <input type="range" id="y3b" min="-200" value="200" max="1000" step="10" oninput="updateCurve(7, 'y3b', value)"
+                              <input type="range" id="y3b" min="-200" value="200" max="1000" step="1" oninput="updateCurve(7, 'y3b', value)"
                               class = "verticalSlider" orient = "vertical">
                               <output for="y3b" id="y3blabel">y: 200</output>
 
