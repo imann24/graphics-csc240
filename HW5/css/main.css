@@ -1,0 +1,51 @@
+/*
+ * Author: Isaiah Mann
+ * Description: Style guide for the curve analysis
+ */
+
+input.horizontalSlider {
+     width: 7.5em;
+}
+
+input.verticalSlider {
+     -webkit-appearance: slider-vertical;
+     writing-mode: bt-lr;
+     height: 7.5em;
+}
+
+input.button {
+     width: 7.5em;
+     background-color: #33b3dd;
+     color: white;
+     font-size: 2em;
+     margin-left: 4em;
+     margin-top: 1em
+}
+
+td {
+     width: 4em;
+}
+
+table#topLeftCurve {
+     position: absolute;
+     top: 1em;
+     left: 1em;
+}
+
+table#topRightCurve {
+     position: absolute;
+     top: 1em;
+     right: 1em;
+}
+
+table#bottomLeftCurve {
+     position: absolute;
+     bottom: 1em;
+     left: 1em;
+}
+
+table#bottomRightCurve {
+     position: absolute;
+     bottom: 1em;
+     right: 1em;
+}

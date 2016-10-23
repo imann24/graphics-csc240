@@ -1,119 +1,30 @@
-<!-- Authors: Isaiah Mann -->
-<!-- Description: Compare how close bezier curves are to a circle -->
-<!-- References: HTML5 Slider Code: http://thenewcode.com/757/Playing-With-The-HTML5-range-Slider-Input -->
+<!--
+     Authors: Isaiah Mann
+     Description: Compare how close bezier curves are to a circle
+     References:
+     - HTML5 Slider Code: http://thenewcode.com/757/Playing-With-The-HTML5-range-Slider-Input
+     - Toggle Code: http://www.w3schools.com/howto/howto_css_switch.asp
+-->
 <!DOCTYPE html>
 <html>
      <head>
           <title>Bezier Curve Analysis</title>
+          <link rel="stylesheet" type="text/css" href="css/main.css">
+          <link rel="stylesheet" type="text/css" href="css/toggle.css">
           <script src = "scripts/point.js"></script>
           <script src = "scripts/bezier.js"></script>
           <script src = "scripts/letter.js"></script>
           <script src = "scripts/animation.js"></script>
-          <script>
-             var canvas;    // DOM object corresponding to the canvas
-             var graphics;  // 2D graphics context for drawing on the canvas
-             var pen;
-             var animation;
-             var levelOfDetail = 500;
-             var curveEndPoints = [new Point(200, 400), new Point(400, 200), new Point(600, 400), new Point(400, 600)];
-             var controlPoints = [new Point(200, 200), new Point(600, 200), new Point (600, 600), new Point(200, 600)];
-             var label = "label";
-
-             function init () {
-                  canvas = document.getElementById("theCanvas");
-                  graphics = canvas.getContext("2d");
-                  pen = new BezierDraw(graphics, levelOfDetail);
-                  animation = new Animator(graphics, canvas);
-                  draw();  // draw something on the canvas
-              }
-
-              function update () {
-                  draw();
-              }
-
-             function draw () {
-                  animation.drawBackground();
-                  drawCurves();
-                  drawGuidingCircle();
-             }
-
-             function drawCurves () {
-                  graphics.strokeStyle = "black";
-                  for (var i = 0; i < curveEndPoints.length; i++) {
-                       pen.bezierQuad(curveEndPoints[i], controlPoints[i], curveEndPoints[(i + 1) % curveEndPoints.length]);
-                  }
-             }
-
-             function drawGuidingCircle () {
-                  graphics.strokeStyle = "blue";
-                  graphics.beginPath();
-                  graphics.arc(400,400,200,0,2*Math.PI);
-                  graphics.stroke();
-             }
-
-             function updateCurve(index, selector, value) {
-                  document.querySelector('#' + selector + label).value = selector[0] + ": " + value;
-                  if (selector.includes("x")) {
-                      controlPoints[index] = new Point(value, controlPoints[index].y);
-                  } else if (selector.includes("y")){
-                      controlPoints[index] = new Point(controlPoints[index].x, value);
-                  }
-                  draw();
-             }
-          </script>
-          <style>
-               input.horizontalSlider {
-                    width: 7.5em;
-               }
-
-               input.verticalSlider {
-               	-webkit-appearance: slider-vertical;
-               	writing-mode: bt-lr;
-                    height: 7.5em;
-               }
-
-               input.button {
-                    width: 7.5em;
-                    background-color: #33b3dd;
-                    color: white;
-                    font-size: 2em;
-                    margin-left: 4em;
-                    margin-top: 1em
-               }
-               td {
-                    width: 4em;
-               }
-
-               table#topLeftCurve {
-                    position: absolute;
-                    top: 1em;
-                    left: 1em;
-               }
-
-               table#topRightCurve {
-                    position: absolute;
-                    top: 1em;
-                    right: 1em;
-               }
-
-               table#bottomLeftCurve {
-                    position: absolute;
-                    bottom: 1em;
-                    left: 1em;
-               }
-
-               table#bottomRightCurve {
-                    position: absolute;
-                    bottom: 1em;
-                    right: 1em;
-               }
-
-               #theCanvas {
-
-               }
-          </style>
+          <script src = "srcripts/analysis.js"></script>
      </head>
      <body onload="init()">
+<!--
+Commented out until I can fix the scaling:
+          <label class="switch">
+               <input type="checkbox">
+               <div class="slider round"></div>
+          </label>
+-->
          <center><canvas id="theCanvas" width="800" height="800"></canvas></center>
          <form>
               <table id = "topLeftCurve">
