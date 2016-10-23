@@ -49,3 +49,9 @@ table#bottomRightCurve {
      bottom: 1em;
      right: 1em;
 }
+
+table {
+     border: 3px solid black;
+     padding: 1em;
+     transition: max-height 0.15s ease-out;
+}
