@@ -1,6 +1,6 @@
 <!-- Authors: Isaiah Mann -->
 <!-- Description: Compare how close bezier curves are to a circle -->
-
+<!-- References: HTML5 Slider Code: http://thenewcode.com/757/Playing-With-The-HTML5-range-Slider-Input -->
 <!DOCTYPE html>
 <html>
      <head>
@@ -8,21 +8,23 @@
           <script src = "scripts/point.js"></script>
           <script src = "scripts/bezier.js"></script>
           <script src = "scripts/letter.js"></script>
+          <script src = "scripts/animation.js"></script>
           <script>
-              var canvas;    // DOM object corresponding to the canvas
-              var graphics;  // 2D graphics context for drawing on the canvas
-              var pen;
-              var levelOfDetail = 500;
-              var coordinates = {};
+             var canvas;    // DOM object corresponding to the canvas
+             var graphics;  // 2D graphics context for drawing on the canvas
+             var pen;
+             var animation;
+             var levelOfDetail = 500;
+             var curveEndPoints = [new Point(200, 400), new Point(400, 200), new Point(600, 400), new Point(400, 600)];
+             var controlPoints = [new Point(200, 200), new Point(600, 200), new Point (600, 600), new Point(200, 600)];
+             var label = "label";
 
-             function init() {
+             function init () {
                   canvas = document.getElementById("theCanvas");
                   graphics = canvas.getContext("2d");
                   pen = new BezierDraw(graphics, levelOfDetail);
+                  animation = new Animator(graphics, canvas);
                   draw();  // draw something on the canvas
-                  coordinates["s1x"] = new Point(100, 100);
-                  coordinates["c1x"] = new Point(150, 200);
-                  coordinates["e1x"] = new Point(300, 300);
               }
 
               function update () {
@@ -30,13 +32,46 @@
               }
 
              function draw () {
+                  animation.drawBackground();
+                  drawCurves();
+                  drawGuidingCircle();
+             }
 
+             function drawCurves () {
+                  graphics.strokeStyle = "black";
+                  for (var i = 0; i < curveEndPoints.length; i++) {
+                       pen.bezierQuad(curveEndPoints[i], controlPoints[i], curveEndPoints[(i + 1) % curveEndPoints.length]);
+                  }
+             }
+
+             function drawGuidingCircle () {
+                  graphics.strokeStyle = "blue";
+                  graphics.beginPath();
+                  graphics.arc(400,400,200,0,2*Math.PI);
+                  graphics.stroke();
+             }
+
+             function updateCurve(index, selector, value) {
+                  document.querySelector('#' + selector + label).value = selector[0] + ": " + value;
+                  if (selector.includes("x")) {
+                      controlPoints[index] = new Point(value, controlPoints[index].y);
+                  } else if (selector.includes("y")){
+                      controlPoints[index] = new Point(controlPoints[index].x, value);
+                  }
+                  draw();
              }
           </script>
           <style>
-               input {
-                    width: 2.5em;
+               input.horizontalSlider {
+                    width: 7.5em;
                }
+
+               input.verticalSlider {
+               	-webkit-appearance: slider-vertical;
+               	writing-mode: bt-lr;
+                    height: 7.5em;
+               }
+
                input.button {
                     width: 7.5em;
                     background-color: #33b3dd;
@@ -45,98 +80,122 @@
                     margin-left: 4em;
                     margin-top: 1em
                }
+               td {
+                    width: 4em;
+               }
+
+               table#topLeftCurve {
+                    position: absolute;
+                    top: 1em;
+                    left: 1em;
+               }
+
+               table#topRightCurve {
+                    position: absolute;
+                    top: 1em;
+                    right: 1em;
+               }
+
+               table#bottomLeftCurve {
+                    position: absolute;
+                    bottom: 1em;
+                    left: 1em;
+               }
+
+               table#bottomRightCurve {
+                    position: absolute;
+                    bottom: 1em;
+                    right: 1em;
+               }
+
+               #theCanvas {
+
+               }
           </style>
      </head>
      <body onload="init()">
-         <canvas id="theCanvas" width="800" height="480"></canvas>
-         <form action="demo_form.asp">
-              <table>
+         <center><canvas id="theCanvas" width="800" height="800"></canvas></center>
+         <form>
+              <table id = "topLeftCurve">
+                   <tr>
+                       <th>Control Point:</th>
+                   </tr>
                     <tr>
-                         <th>Curve 1</th>
                          <td>
-                              <u>Start</u>
-                              (<input type="text" name="s1x">,
-                              <input type="text" name="s1y">)
-                              <br>
-                         </td>
-                         <td>
-                              <u>Control Point</u>
-                              (<input type="text" name="c1x">,
-                              <input type="text" name="c1y">)
-                              <br>
-                         </td>
-                         <td>
-                              <u>End</u>
-                              (<input type="text" name="e1x">,
-                              <input type="text" name="e1y">)
-                              <br>
+                              <output for="x0" id="x0label">x: 200</output><br>
+                              <input type="range" id="x0" min="-200" value="200" max="1000" step="10" oninput="updateCurve(0, 'x0', value)"
+                              class = "horizontalSlider">
+
                          </td>
                     </tr>
                     <tr>
-                         <th>Curve 2</th>
                          <td>
-                              <u>Start</u>
-                              (<input type="text" name="s2x">,
-                              <input type="text" name="s2y">)
-                              <br>
-                         </td>
-                         <td>
-                              <u>Control Point</u>
-                              (<input type="text" name="c2x">,
-                              <input type="text" name="c2y">)
-                              <br>
-                         </td>
-                         <td>
-                              <u>End</u>
-                              (<input type="text" name="e2x">,
-                              <input type="text" name="e2y">)
-                              <br>
-                         </td>
-                    </tr>
-                    <tr>
-                         <th>Curve 3</th>
-                         <td>
-                              <u>Start</u>
-                              (<input type="text" name="s3x">,
-                              <input type="text" name="s3y">)
-                              <br>
-                         </td>
-                         <td>
-                              <u>Control Point</u>
-                              (<input type="text" name="c3x">,
-                              <input type="text" name="c3y">)
-                              <br>
-                         </td>
-                         <td>
-                              <u>End</u>
-                              (<input type="text" name="e3x">,
-                              <input type="text" name="e3y">)
-                              <br>
-                         </td>
-                    </tr>
-                    <tr>
-                         <th>Curve 4</th>
-                         <td>
-                              <u>Start</u>
-                              (<input type="text" name="s4x">,
-                              <input type="text" name="s4y">)
-                              <br>
-                         </td>
-                         <td>
-                              <u>Control Point</u>
-                              (<input type="text" name="c4x">,
-                              <input type="text" name="c4y">)
-                              <br>
-                         </td>
-                         <td>
-                              <u>End</u>
-                              (<input type="text" name="e4x">,
-                              <input type="text" name="e4y">)
-                              <br>
+                              <input type="range" id="y0" min="-200" value="200" max="1000" step="10" oninput="updateCurve(0, 'y0', value)"
+                              class = "verticalSlider" orient = "vertical">
+                              <output for="y0" id="y0label">y: 200</output>
+
                          </td>
                     </tr>
                </table>
-               <input class = "button" type="button" value="Update" onclick="update()">
+               <table id = "topRightCurve">
+                    <tr>
+                        <th>Control Point:</th>
+                    </tr>
+                     <tr>
+                          <td>
+                               <output for="x1" id="x1label">x: 200</output><br>
+                               <input type="range" id="x1" min="-200" value="200" max="1000" step="1" oninput="updateCurve(1, 'x1', value)"
+                               class = "horizontalSlider">
+
+                          </td>
+                     </tr>
+                     <tr>
+                          <td>
+                               <input type="range" id="y1" min="-200" value="200" max="1000" step="1" oninput="updateCurve(1, 'y1', value)"
+                               class = "verticalSlider" orient = "vertical">
+                               <output for="y1" id="y1label">y: 200</output>
+
+                          </td>
+                     </tr>
+               </table>
+               <table id = "bottomRightCurve">
+                    <tr>
+                         <th>Top Left Curve</th>
+                         <td>Control Point:</td>
+                         <td>
+
+                              <input type="range" id="x2" min="-200" value="200" max="1000" step="10" oninput="updateCurve(2, 'x2', value)"
+                              class = "horizontalSlider">
+                              <br><br><br><br><br>
+                              <output for="x2" id="x2label">x: 200</output>
+                         </td>
+                         <td>
+                              <input type="range" id="y2" min="-200" value="200" max="1000" step="10" oninput="updateCurve(2, 'y2', value)"
+                              class = "verticalSlider" orient = "vertical">
+                              <output for="y2" id="y2label">y: 200</output>
+
+                         </td>
+                    </tr>
+               </table>
+               <table id = "bottomLeftCurve">
+                    <tr>
+                         <th>Top Left Curve</th>
+                         <td>Control Point:</td>
+                         <td>
+
+                              <input type="range" id="x3" min="-200" value="200" max="1000" step="10" oninput="updateCurve(3, 'x3', value)"
+                              class = "horizontalSlider">
+                              <br><br><br><br><br>
+                              <output for="x3" id="x3label">x: 200</output>
+                         </td>
+                         <td>
+                              <input type="range" id="y3" min="-200" value="200" max="1000" step="10" oninput="updateCurve(3, 'y3', value)"
+                              class = "verticalSlider" orient = "vertical">
+                              <output for="y3" id="y3label">y: 200</output>
+
+                         </td>
+                    </tr>
+               </table>
           </form>
      </body>
 </html>
