@@ -11,13 +11,13 @@
 }
 
 input.horizontalSlider {
-     width: 8em;
+     width: 10em;
 }
 
 input.verticalSlider {
      -webkit-appearance: slider-vertical;
      writing-mode: bt-lr;
-     height: 8em;
+     height: 10em;
 }
 
 input.button {
@@ -51,14 +51,14 @@ table#bottomLeftCurve {
      border: 3px solid red;
      position: absolute;
      bottom: 1em;
-     left: 1em;
+     left: 12.5em;
 }
 
 table#bottomRightCurve {
      border: 3px solid green;
      position: absolute;
      bottom: 1em;
-     right: 1em;
+     right: 12.5em;
 }
 
 table {
