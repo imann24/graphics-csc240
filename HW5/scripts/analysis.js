@@ -61,7 +61,6 @@ function getUnitCirclePoints (center, radius, steps) {
           var currentPoint = new Point(
                radius * -Math.cos(currentAngle) + center.x,
                radius * Math.sin(currentAngle) + center.y);
-               console.log(i + ": " + currentPoint.valueOf())
           points[quadrantKeys[quadrantIndex]].push(currentPoint);
           currentAngle -= anglePerStep;
           if (i >= quadrantLimit) {
