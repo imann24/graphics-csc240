@@ -1,0 +1,135 @@
+<!--
+     Authors: Isaiah Mann, Sara Mathieson (Assignment Template)
+     Description: A small animation of a square tracing around a diamond
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Diamond Animation</title>
+<!-- Used to store 2D coordinate vectors -->
+<script src = "scripts/vector.js"></script>
+<!-- Contains imple distance equation -->
+<script src = "scripts/distance.js"></script>
+<script>
+    var canvas;    // DOM object corresponding to the canvas
+    var graphics;  // 2D graphics context for drawing on the canvas
+
+    var sideLength = 30; // side length of our square
+    var speed = 0.5; // The speed at which the square travels
+    var diamondRadius = 100; // Stores the diamonds radius for future calculations
+    var diamondPosition = new Vector2(200, 200); // Diamond's position
+
+    // Coordinates for the end points of the diamond
+    var diamondCoordinates = [
+      new Vector2(diamondPosition.x, diamondPosition.y - diamondRadius),
+      new Vector2(diamondPosition.x - diamondRadius, diamondPosition.y),
+      new Vector2(diamondPosition.x, diamondPosition.y + diamondRadius),
+      new Vector2(diamondPosition.x + diamondRadius, diamondPosition.y)
+    ];
+
+    // Distance of one side length for the diamond
+    var diamondSideLength = Distance.calculate(diamondCoordinates[0], diamondCoordinates[1]);
+
+    // Records the directions in order that the square travels in
+    var travelDirections = [
+      new Vector2(1, 1),
+      new Vector2(-1, 1),
+      new Vector2(-1, -1),
+      new Vector2(1, -1)
+    ];
+
+    // Records the square's sizes in order
+    var scaleFactors = [0.5, 1.0, 0.5, 1.0];
+
+    // Tracks the squares position 0 = NE, 1 = SE, 2 = SW, 3 = NW
+    var currentDirectionIndex = 0;
+
+    // Sets the direction in which the square travls in
+    var currentDirection = travelDirections[currentDirectionIndex]
+
+    // Tracks distance traveled in order to decide when to switch directions
+    var distanceTravelledInDirection = 0;
+
+    // A refrence to the current scale of the canvas
+    var currentScale = 1.0;
+
+    // Draws a diamond to the screen
+    function diamond() {
+        graphics.beginPath();
+        var currentPoint = diamondCoordinates[0];
+        graphics.moveTo(currentPoint.x, currentPoint.y);
+        for (var i = 1; i < diamondCoordinates.length; i++) {
+             currentPoint = diamondCoordinates[i];
+             graphics.lineTo(currentPoint.x, currentPoint.y);
+        }
+        graphics.closePath();
+        graphics.stroke();
+        graphics.fillStyle = "black";
+        graphics.fillText("large",100,120);
+        graphics.fillText("large",280,290);
+        graphics.fillText("small",100,290);
+        graphics.fillText("small",280,120);
+    }
+
+    // Animates the square
+    function animate() {
+        // clear background and draw diamond
+        graphics.save();
+        graphics.setTransform(1, 0, 0, 1, 0, 0);
+        graphics.clearRect(0, 0, canvas.width, canvas.height);
+        diamond();
+        graphics.restore();
+
+        // Draws the square
+        graphics.fillRect(-sideLength / 2, - sideLength / 2, sideLength, sideLength);
+        // Divides by scale to keep speed constant
+        var travel = currentDirection.scalar(speed / currentScale);
+        graphics.translate(travel.x, travel.y);
+        distanceTravelledInDirection += Distance.calculate(travel);
+        // Checks distance traveled against the side lenght of the diamond (factoring in canvas scale)
+        if (distanceTravelledInDirection * currentScale >= diamondSideLength) {
+             changeDirection();
+        }
+    }
+
+    function changeDirection () {
+         currentDirectionIndex++;
+         // Direction wraps
+         currentDirectionIndex %= travelDirections.length;
+         currentDirection = travelDirections[currentDirectionIndex];
+         // Resets distance
+         distanceTravelledInDirection = 0;
+         scaleBox(currentDirectionIndex);
+    }
+
+    // Resizes the box (by resizing the canvas)
+    function scaleBox (scaleIndex) {
+         var previousScale = currentScale;
+         currentScale = scaleFactors[scaleIndex];
+         // Divide by previous scale to set the scale instead of just multiplying by the previous scale
+         // Relies on the assumption that the scale has not been modified using a different approach
+         graphics.scale(currentScale / previousScale, currentScale / previousScale);
+    }
+
+    function draw() {
+        // set fill color
+        graphics.fillStyle = "blue";
+        // move square to top of diamond
+        graphics.translate(diamondPosition.x ,diamondPosition.y - diamondRadius);
+        scaleBox(0);
+    }
+
+    function init() {
+        canvas = document.getElementById("theCanvas");
+        graphics = canvas.getContext("2d");
+        draw();  // draw something on the canvas
+        setInterval(animate, 5);
+    }
+</script>
+
+</head>
+<body onload="init()">
+    <canvas id="theCanvas" width="800" height="400"></canvas>
+</body>
+</html>
