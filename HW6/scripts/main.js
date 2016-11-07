@@ -14,11 +14,12 @@ var random;
 // Tuning:
 var numberOfPyramids = 10;
 var numberOfCubes = 10;
-var min = -10;
-var max = 10;
+var min = -20;
+var max = 20;
 var playerSpeed = 1;
 var playerLookSpeed = 0.01;
 var playerDeceleration = 0.25;
+var cubeHeight = 10;
 
 // World:
 var pyramids;
@@ -33,7 +34,7 @@ function createWorld() {
     scene = new THREE.Scene(); // Create a new scene which we can add objects to.
 
     // create a camera, sitting on the positive z-axis.  The camera is not part of the scene.
-    camera = new THREE.PerspectiveCamera(20, canvas.width/canvas.height, 1, 30);
+    camera = new THREE.PerspectiveCamera(20, canvas.width/canvas.height, 1, 100);
     camera.position.z = 10;
 
     // create some lights and add them to the scene.
@@ -48,7 +49,7 @@ function createWorld() {
          [0xffffff, 0x99ffff, 0xff99ff, 0xffff99, 0xffffff]));
     }
     for (var i = 0; i < numberOfCubes; i++) {
-         pyramids.push(new Cube(scene, new Vector3(random.generate(), 1, random.generate()), new Vector3(1, 2, 1),0xff99ff));
+         pyramids.push(new Cube(scene, new Vector3(random.generate(), cubeHeight / 2, random.generate()), new Vector3(1, cubeHeight, 1),0xff99ff));
     }
     var scale = Math.abs(min) + Math.abs(max);
     plane = new Plane(scene, new Vector2(scale, scale), 0xffff00, Math.PI / 2);

@@ -15,6 +15,11 @@ function Player (camera, canvas, speed, lookSpeed, deceleration) {
      this.yRotation = 0;
      this.setup();
 }
+Player.prototype = {
+     get facing () {
+          return this.camera.rotation.y;
+     },
+}
 
 Player.prototype.setup = function () {
      this.setupKeyMovement();
@@ -74,8 +79,8 @@ Player.prototype.setupMouseLook = function () {
 }
 
 Player.prototype.move = function () {
-     camera.position.x += this.xSpeed;
-     camera.position.z += this.zSpeed;
+     this.applyMove("x", this.xSpeed);
+     this.applyMove("z", this.zSpeed);
      var xDeceleration = null;
      var zDeceleration = null;
      if (this.xSpeed < 0) {
@@ -93,6 +98,21 @@ Player.prototype.move = function () {
      }
      if (zDeceleration) {
           this.zSpeed -= zDeceleration;
+     }
+}
+
+Player.prototype.applyMove = function (axis, velocity) {
+     console.log(this.facing);
+     if (axis == "z") {
+          camera.position.z += velocity;
+          if (Math.tan(this.facing) != 0) {
+               camera.position.x += velocity / Math.tan(this.facing);
+          }
+     } else if (axis == "x") {
+          camera.position.x += velocity;
+          if (Math.tan(this.facing) != 0) {
+               camera.position.z += velocity / Math.tan(this.facing - Math.PI / 2);
+          }
      }
 }
 
