@@ -16,6 +16,8 @@ var numberOfPyramids = 10;
 var min = -10;
 var max = 10;
 var playerSpeed = 1;
+var playerLookSpeed = 0.01;
+var playerDeceleration = 0.25;
 
 // World:
 var pyramids;
@@ -48,13 +50,14 @@ function createWorld() {
     plane = new Plane(scene, new Vector2(scale, scale), 0xffff00, Math.PI / 2);
     camera.position.y += 0.5;
 
-    player = new Player(camera, playerSpeed);
+    player = new Player(camera, canvas, playerSpeed, playerLookSpeed, playerDeceleration);
 }
 
 // Render the scene. This is called for each frame of the animation.
 function render() {
     requestAnimationFrame( render );
     player.move();
+    player.look();
     renderer.render(scene, camera);
 }
 
