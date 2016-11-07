@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<head>
+<title>Robotic Arm</title>
+<script src="lib/three.min.js"></script>
+<script src="lib/KeyboardState.js"></script>
+
+<script>
+    var scene, camera, renderer; // Three.js rendering basics.
+    var speed = 0.09;
+    var canvas; // The canvas on which the image is rendered.
+
+    var keyboard = new KeyboardState();
+
+    // The parts of our robotic arm
+    var arm;
+    var lowerArm;
+
+    // Create the scene. This function is called once, as soon as the page loads.
+    // The renderer has already been created before this function is called.
+    function createWorld() {
+
+        renderer.setClearColor(0); // Set background color (0, or 0x000000, is black).
+        scene = new THREE.Scene(); // Create a new scene which we can add objects to.
+
+        // create a camera, sitting on the positive z-axis.  The camera is not part of the scene.
+        camera = new THREE.PerspectiveCamera(20, canvas.width/canvas.height, 1, 30);
+        camera.position.set(0,0,20);
+
+        // create some lights and add them to the scene.
+        scene.add( new THREE.DirectionalLight( 0xffffff, 0.4 ) ); // dim light shining from above
+        var viewpointLight = new THREE.DirectionalLight( 0xffffff, 0.8 );  // a light to shine in the direction the camera faces
+        viewpointLight.position.set(0,0,1);  // shines down the z-axis
+        scene.add(viewpointLight);
+
+        // set up cube geometry and material
+        var cubeGeom = new THREE.BoxGeometry(1,1,1);
+
+        // draw each face of the cube in a different color
+        var cubeFaceMaterial = new THREE.MeshFaceMaterial( [  // An array of materials
+            new THREE.MeshLambertMaterial( { color: "red" } ),     // +x face
+            new THREE.MeshLambertMaterial( { color: "cyan" } ),    // -x face
+            new THREE.MeshLambertMaterial( { color: "green" } ),   // +y face
+            new THREE.MeshLambertMaterial( { color: "magenta" } ), // -y face
+            new THREE.MeshLambertMaterial( { color: "yellow" } ),  // +z face
+            new THREE.MeshLambertMaterial( { color: "blue" } )     // -z face
+        ] );
+
+        // set up the cube for the lower arm
+        lowerCube = new THREE.Mesh(cubeGeom, cubeFaceMaterial);
+        scene.add(lowerCube);
+        arm = new THREE.Object3D();
+        lowerArm = new THREE.Object3D();
+        var upperCube = new THREE.Mesh(cubeGeom, cubeFaceMaterial);
+
+        lowerArm.add(lowerCube);
+        arm.add(upperCube);
+        arm.add(lowerArm);
+        scene.add(arm);
+
+        // TODO add your code here
+        lowerCube.scale.set(3, 1, 1);
+        upperCube.scale.set(3, 1, 1);
+        arm.position.x += 1.5;
+        lowerArm.position.x += 1.5;
+        lowerCube.position.x += 1.5;
+        arm.rotation.set(0.2,-0.4,0);
+    }
+
+    function update() {
+        keyboard.update();
+        if ( keyboard.pressed("left") ) {
+             // TODO move arm clockwise
+            arm.rotation.z -= speed;
+        }
+        if ( keyboard.pressed("right") ) {
+            // TODO move arm counter-clockwise
+            arm.rotation.z += speed;
+        }
+        if ( keyboard.pressed("down") ) {
+            // TODO move lowerArm clockwise
+            lowerArm.rotation.z -= speed;
+        }
+        if ( keyboard.pressed("up") ) {
+            // TODO move lowerArm counter-clockwise
+            lowerArm.rotation.z += speed;
+        }
+    }
+
+    // Render the scene. This is called for each frame of the animation.
+    function render() {
+        requestAnimationFrame( render );
+        update();
+        // TODO your code here
+        renderer.render(scene, camera);
+
+        //update();
+    }
+
+    //----------------------------------------------------------------------------------
+
+    // The init() function is called by the onload event when the document has loaded.
+    function init() {
+        try {
+            canvas = document.getElementById("glcanvas");
+            renderer = new THREE.WebGLRenderer( { canvas: canvas, antialias: true} );
+        }
+        catch (e) {
+            document.getElementById("canvas-holder").innerHTML = "<h3><b>WebGL is not available.</b><h3>";
+            return;
+        }
+
+        // create world and render scene
+        createWorld();
+        render();
+    }
+
+</script>
+
+</head>
+<body onload="init()">
+<div id="canvas-holder">
+    <canvas id="glcanvas" width="600" height="400"></canvas>
+</div>
+</body>
+</html>
