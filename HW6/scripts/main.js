@@ -13,6 +13,7 @@ var random;
 
 // Tuning:
 var numberOfPyramids = 10;
+var numberOfCubes = 10;
 var min = -10;
 var max = 10;
 var playerSpeed = 1;
@@ -45,6 +46,9 @@ function createWorld() {
     for (var i = 0; i < numberOfPyramids; i++) {
          pyramids.push(new Pyramid(scene, new Vector3(random.generate(), 0, random.generate()), new Vector3(1, 1, 1),
          [0xffffff, 0x99ffff, 0xff99ff, 0xffff99, 0xffffff]));
+    }
+    for (var i = 0; i < numberOfCubes; i++) {
+         pyramids.push(new Cube(scene, new Vector3(random.generate(), 1, random.generate()), new Vector3(1, 2, 1),0xff99ff));
     }
     var scale = Math.abs(min) + Math.abs(max);
     plane = new Plane(scene, new Vector2(scale, scale), 0xffff00, Math.PI / 2);

@@ -26,6 +26,14 @@ WorldObject.prototype.addToScene = function () {
      this.scene.add(this.mesh);
 }
 
+WorldObject.prototype.setOrigin = function () {
+     var p = this.mesh.position;
+     var o = this.origin;
+     p.x = o.x;
+     p.y = o.y;
+     p.z = o.z;
+}
+
 // Origin and scale should be Vector3 objects. Origin is the center of the base
 function Pyramid (scene, origin, scale, colors) {
      this.earlySteup(scene, origin, scale, colors);
@@ -89,3 +97,16 @@ function Plane (scene, scale, color, angle) {
 }
 
 Plane.prototype = new WorldObject();
+
+function Cube (scene, origin, scale, color) {
+     this.scene = scene;
+     this.origin = origin;
+     this.scale = scale;
+     this.color = color;
+     this.geometry = new THREE.BoxGeometry(scale.x, scale.y, scale.z);
+     this.material = new THREE.MeshBasicMaterial( {color: this.color} );
+     this.lateSetup();
+     this.setOrigin();
+}
+
+Cube.prototype = new WorldObject();
