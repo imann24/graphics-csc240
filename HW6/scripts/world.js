@@ -28,7 +28,6 @@ WorldObject.prototype.addToScene = function () {
 
 // Origin and scale should be Vector3 objects. Origin is the center of the base
 function Pyramid (scene, origin, scale, colors) {
-     console.log(origin);
      this.earlySteup(scene, origin, scale, colors);
      this.createVertices();
      this.createFaces();
@@ -77,3 +76,16 @@ Pyramid.prototype.createMaterial = function () {
         new THREE.MeshLambertMaterial( { color: c[4], shading: THREE.FlatShading } )
      ]);
 }
+
+function Plane (scene, scale, color, angle) {
+     this.scene = scene;
+     this.scale = scale;
+     this.color = color;
+     this.angle = angle;
+     this.geometry = new THREE.PlaneGeometry(scale.x, scale.y);
+     this.material = new THREE.MeshBasicMaterial({color: this.color, side: THREE.DoubleSide});
+     this.lateSetup();
+     this.mesh.rotation.x += angle;
+}
+
+Plane.prototype = new WorldObject();

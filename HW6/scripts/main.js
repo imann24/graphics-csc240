@@ -18,6 +18,7 @@ var max = 10;
 
 // World:
 var pyramids;
+var plane;
 
 // Create the scene. This function is called once, as soon as the page loads.
 // The renderer has already been created before this function is called.
@@ -36,10 +37,14 @@ function createWorld() {
     viewpointLight.position.set(0,0,1);  // shines down the z-axis
     scene.add(viewpointLight);
     pyramids = [];
+
     for (var i = 0; i < numberOfPyramids; i++) {
          pyramids.push(new Pyramid(scene, new Vector3(random.generate(), 0, random.generate()), new Vector3(1, 1, 1),
          [0xffffff, 0x99ffff, 0xff99ff, 0xffff99, 0xffffff]));
     }
+    var scale = Math.abs(min) + Math.abs(max);
+    plane = new Plane(scene, new Vector2(scale, scale), 0xffff00, Math.PI / 2);
+    camera.position.y += 0.5;
 }
 
 // Render the scene. This is called for each frame of the animation.
