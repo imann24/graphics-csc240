@@ -28,6 +28,7 @@ WorldObject.prototype.addToScene = function () {
 
 // Origin and scale should be Vector3 objects. Origin is the center of the base
 function Pyramid (scene, origin, scale, colors) {
+     console.log(origin);
      this.earlySteup(scene, origin, scale, colors);
      this.createVertices();
      this.createFaces();
@@ -39,12 +40,13 @@ Pyramid.prototype = new WorldObject();
 
 Pyramid.prototype.createVertices = function () {
      var s = this.scale;
+     var o = this.origin;
      this.geometry.vertices = [
-          new THREE.Vector3(s.x, 0, s.z),    // vertex number 0
-          new THREE.Vector3(s.x, 0, -s.z),   // vertex number 1
-          new THREE.Vector3(-s.x, 0, -s.z),  // vertex number 2
-          new THREE.Vector3(-s.x, 0, s.z),   // vertex number 3
-          new THREE.Vector3( 0, s.y, 0 )     // vertex number 4
+          new THREE.Vector3(o.x + s.x, o.y, o.z + s.z),    // vertex number 0
+          new THREE.Vector3(o.x + s.x, o.y, o.z - s.z),   // vertex number 1
+          new THREE.Vector3(o.x - s.x, o.y, o.z - s.z),  // vertex number 2
+          new THREE.Vector3(o.x - s.x, o.y, o.z + s.z),   // vertex number 3
+          new THREE.Vector3(o.x, o.y + s.y, o.z)     // vertex number 4
      ];
 }
 
