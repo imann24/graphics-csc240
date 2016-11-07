@@ -1,7 +1,7 @@
 /*
  * Author: Isaiah Mann
  * Description: Runs the HW6 3D canvas
- * Dependencies: THREE.js, random.js, world.js, vector.js
+ * Dependencies: THREE.js, random.js, world.js, vector.js, player.js
  */
 
 // THREE.js:
@@ -15,10 +15,12 @@ var random;
 var numberOfPyramids = 10;
 var min = -10;
 var max = 10;
+var playerSpeed = 1;
 
 // World:
 var pyramids;
 var plane;
+var player;
 
 // Create the scene. This function is called once, as soon as the page loads.
 // The renderer has already been created before this function is called.
@@ -45,11 +47,14 @@ function createWorld() {
     var scale = Math.abs(min) + Math.abs(max);
     plane = new Plane(scene, new Vector2(scale, scale), 0xffff00, Math.PI / 2);
     camera.position.y += 0.5;
+
+    player = new Player(camera, playerSpeed);
 }
 
 // Render the scene. This is called for each frame of the animation.
 function render() {
     requestAnimationFrame( render );
+    player.move();
     renderer.render(scene, camera);
 }
 
