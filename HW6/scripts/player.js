@@ -84,10 +84,8 @@ Player.prototype.applyMove = function (axis, velocity) {
           camera.position.z += Math.cos(this.facing) * velocity;
           camera.position.x += Math.sin(this.facing) * velocity;
      } else if (axis == "x") {
-          camera.position.x += velocity;
-          if (Math.tan(this.facing) != 0) {
-               camera.position.z += velocity / Math.tan(this.facing - Math.PI / 2);
-          }
+          camera.position.x -= Math.sin(this.facing - Math.PI / 2) * velocity;
+          camera.position.z -= Math.cos(this.facing - Math.PI / 2) * velocity;
      }
 }
 
