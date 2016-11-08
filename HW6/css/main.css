@@ -3,5 +3,6 @@ img {
      height: 480px;
 }
 canvas {
+     margin-left: 200px;
      float: left;
 }

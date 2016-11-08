@@ -1,7 +1,7 @@
 /*
  * Author: Isaiah Mann
  * Description: Runs the HW6 3D canvas
- * Dependencies: THREE.js, random.js, world.js, vector.js, player.js
+ * Dependencies: KeyboardState.js, THREE.js, random.js, world.js, vector.js, player.js
  */
 
 // THREE.js:
@@ -10,6 +10,7 @@ var canvas; // The canvas on which the image is rendered.
 
 // Util:
 var random;
+var keyboard;
 
 // Tuning:
 var numberOfPyramids = 10;
@@ -17,8 +18,8 @@ var numberOfCubes = 10;
 var min = -20;
 var max = 20;
 var playerSpeed = 1;
+var playerStrafeSpeed = 0.5;
 var playerLookSpeed = 0.01;
-var playerDeceleration = 0.25;
 var cubeHeight = 10;
 
 // World:
@@ -55,7 +56,7 @@ function createWorld() {
     plane = new Plane(scene, new Vector2(scale, scale), 0xffff00, Math.PI / 2);
     camera.position.y += 0.5;
 
-    player = new Player(camera, canvas, playerSpeed, playerLookSpeed, playerDeceleration);
+    player = new Player(camera, canvas, playerSpeed, playerStrafeSpeed, playerLookSpeed);
 }
 
 // Render the scene. This is called for each frame of the animation.
@@ -74,6 +75,7 @@ function init() {
        canvas = document.getElementById("glcanvas");
        renderer = new THREE.WebGLRenderer( { canvas: canvas, antialias: true} );
        random = new Random(min, max);
+       keyboard = new KeyboardState();
     }
     catch (e) {
        document.getElementById("canvas-holder").innerHTML = "<h3><b>WebGL is not available.</b><h3>";
