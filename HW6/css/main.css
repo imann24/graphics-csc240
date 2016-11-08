@@ -6,3 +6,12 @@ canvas {
      margin-left: 200px;
      float: left;
 }
+
+#demo {
+     width: 20em;
+     margin: auto;
+}
+
+#demo iframe {
+     margin: 5em -7.5em;
+}
