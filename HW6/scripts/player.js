@@ -19,8 +19,8 @@ function Player (scene, camera, canvas, speed, strafeSpeed, lookSpeed) {
      this.yLook = 0;
      this.xLook = 0;
      this.setup();
-     console.log(this);
 }
+
 Player.prototype = {
      // Getter var to make accessing the look rotation more concise:
      get facing () {
