@@ -13,8 +13,8 @@ var random;
 var keyboard;
 
 // Tuning:
-var numberOfPyramids = 10;
-var numberOfCubes = 10;
+var numberOfPyramids = 30;
+var numberOfCubes = 20;
 var min = -20;
 var max = 20;
 var playerSpeed = 1;
