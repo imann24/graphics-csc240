@@ -1,3 +1,8 @@
+/**
+ * @author: Isaiah Mann
+ * @desc: Random range code
+ */
+
 function Random (min, max) {
      this.min = min;
      this.max = max;

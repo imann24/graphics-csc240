@@ -1,10 +1,11 @@
-/*
- * Author: Isaiah Mann
- * Description: A script to control a player
- * Dependencies: THREE.js, KeyboardState.js
+/**
+ * @author: Isaiah Mann
+ * @desc: A script to control a player
+ * @requires: THREE.js, KeyboardState.js, PointerLockControls.js
  */
 
-function Player (camera, canvas, speed, strafeSpeed, lookSpeed) {
+function Player (scene, camera, canvas, speed, strafeSpeed, lookSpeed) {
+     this.scene = scene;
      this.camera = camera;
      this.canvas = canvas;
      this.speed = speed;
@@ -15,7 +16,10 @@ function Player (camera, canvas, speed, strafeSpeed, lookSpeed) {
      this.zSpeed = 0;
      this.zRotation = 0;
      this.yRotation = 0;
+     this.yLook = 0;
+     this.xLook = 0;
      this.setup();
+     console.log(this);
 }
 Player.prototype = {
      // Getter var to make accessing the look rotation more concise:
@@ -37,28 +41,11 @@ Player.prototype.getMousePos = function (canvas, evt) {
 }
 
 Player.prototype.setupMouseLook = function () {
-     var _this = this;
-     this.canvas.addEventListener('mousemove', function(evt) {
-       var mousePos = _this.getMousePos(_this.canvas, evt);
-       var width = _this.canvas.width;
-       var height = _this.canvas.height;
-       var cellWidth = width / 3;
-       var cellHeight = height / 3;
-       if (mousePos.x < cellWidth) {
-          _this.yRotation = _this.lookSpeed;
-       } else if (mousePos.x > cellWidth * 2) {
-            _this.yRotation = -_this.lookSpeed;
-       } else {
-            _this.yRotation = 0;
-       }
-       if (mousePos.y < cellHeight) {
-          _this.zRotation = _this.lookSpeed;
-       } else if (mousePos.y > cellHeight * 2) {
-            _this.zRotation = -_this.lookSpeed;
-       } else {
-            _this.zRotation = 0;
-       }
-     }, false);
+    this.pointerLook = new THREE.PointerLockControls(this.camera);
+    this.scene.add(this.pointerLook.getObject());
+    this.pointerLook.enabled = true;
+    // Accounts for the offset of adding the camera to the controls parent
+    camera.position.y -= 5;
 }
 
 // Uses KeyboardState.js:
@@ -89,7 +76,17 @@ Player.prototype.applyMove = function (axis, velocity) {
      }
 }
 
-Player.prototype.look = function () {
-     camera.rotation.x += this.zRotation;
-     camera.rotation.y += this.yRotation;
+Player.prototype.applyRotation = function (axisKey) {
+     var vector = new THREE.Vector3( 1, 0, 0 );
+     var angle;
+     var axis;
+     if (axisKey = "x") {
+          axis = new THREE.Vector3(1, 0, 0);
+          angle = this.xLook;
+     } else if (axisKey == "y") {
+          axis = new THREE.Vector3(0, 1, 0);
+          angle = this.yLook;
+     }
+     vector.applyAxisAngle(axis, angle);
+     this.camera.rotation.setFromVector3(vector);
 }

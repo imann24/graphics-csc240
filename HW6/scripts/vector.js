@@ -1,6 +1,6 @@
-/*
- * Author: Isaiah Mann
- * Description: Code Related to 3D & 2D vectors
+/**
+ * @author: Isaiah Mann
+ * @desc: Code Related to 3D & 2D vectors
  */
 
 var yKey = "y";

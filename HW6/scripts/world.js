@@ -1,6 +1,7 @@
-/* Author: Isaiah Mann
- * Description: Used to draw 3D shapes in the world
- * Dependencies: THREE.js
+/**
+ * @author: Isaiah Mann
+ * @desc: Used to draw 3D shapes in the world
+ * @requires: THREE.js
  */
 
 function WorldObject () {}

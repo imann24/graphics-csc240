@@ -1,7 +1,7 @@
-/*
- * Author: Isaiah Mann
- * Description: Runs the HW6 3D canvas
- * Dependencies: KeyboardState.js, THREE.js, random.js, world.js, vector.js, player.js
+/**
+ * @author: Isaiah Mann
+ * @desc: Runs the HW6 3D canvas
+ * @requires: KeyboardState.js, THREE.js, random.js, world.js, vector.js, player.js
  */
 
 // THREE.js:
@@ -35,7 +35,7 @@ function createWorld() {
     scene = new THREE.Scene(); // Create a new scene which we can add objects to.
 
     // create a camera, sitting on the positive z-axis.  The camera is not part of the scene.
-    camera = new THREE.PerspectiveCamera(20, canvas.width/canvas.height, 1, 100);
+    camera = new THREE.PerspectiveCamera(20, canvas.width/canvas.height, 1, 200);
     camera.position.z = 10;
 
     // create some lights and add them to the scene.
@@ -55,15 +55,13 @@ function createWorld() {
     var scale = Math.abs(min) + Math.abs(max);
     plane = new Plane(scene, new Vector2(scale, scale), 0xffff00, Math.PI / 2);
     camera.position.y += 0.5;
-
-    player = new Player(camera, canvas, playerSpeed, playerStrafeSpeed, playerLookSpeed);
+    player = new Player(scene, camera, canvas, playerSpeed, playerStrafeSpeed, playerLookSpeed);
 }
 
 // Render the scene. This is called for each frame of the animation.
 function render() {
     requestAnimationFrame( render );
     player.move();
-    player.look();
     renderer.render(scene, camera);
 }
 
