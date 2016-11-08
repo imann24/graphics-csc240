@@ -52,7 +52,7 @@ function createWorld() {
     var randomCubeHeight = new Random(0, maxCubeHeight);
     for (var i = 0; i < numberOfCubes; i++) {
          var height = randomCubeHeight.generate();
-         worldObjects.push(new Cube(scene, new Vector3(random.generate(), height / 2, random.generate()), new Vector3(1, height, 1),0xff99ff));
+         worldObjects.push(new Cube(scene, new Vector3(random.generate(), height / 2, random.generate()), new Vector3(1, height, 1),0xff990f));
     }
     var scale = Math.abs(min) + Math.abs(max);
     plane = new Plane(scene, new Vector2(scale, scale), 0xffff00, Math.PI / 2);
