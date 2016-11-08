@@ -17,6 +17,16 @@ function Vector3 (x, y, z) {
 
 Vector3.prototype = new Vector();
 
+Vector3.one = function () {
+     return new Vector3(1, 1, 1);
+}
+
+Vector3.prototype.scale = function (scalar) {
+     this.x *= scalar;
+     this.y *= scalar;
+     this.z *= scalar;
+}
+
 function Vector2 (x, y) {
      this.x = isNaN(x) ? 0 : x;
      this.y = isNaN(y) ? 0 : y;

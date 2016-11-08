@@ -21,6 +21,7 @@ var playerSpeed = 1;
 var playerStrafeSpeed = 0.5;
 var playerLookSpeed = 0.01;
 var maxCubeHeight = 10;
+var worldObjectScale = 1;
 
 // World:
 var worldObjects;
@@ -44,15 +45,18 @@ function createWorld() {
     viewpointLight.position.set(0,0,1);  // shines down the z-axis
     scene.add(viewpointLight);
     worldObjects = [];
-
+    var pyramidScale = Vector3.one();
+    pyramidScale.scale(worldObjectScale);
     for (var i = 0; i < numberOfPyramids; i++) {
-         worldObjects.push(new Pyramid(scene, new Vector3(random.generate(), 0, random.generate()), new Vector3(1, 1, 1),
+         worldObjects.push(new Pyramid(scene, new Vector3(random.generate(), 0, random.generate()),
+         pyramidScale,
          [0xffffff, 0x99ffff, 0xff99ff, 0xffff99, 0xffffff]));
     }
     var randomCubeHeight = new Random(0, maxCubeHeight);
     for (var i = 0; i < numberOfCubes; i++) {
          var height = randomCubeHeight.generate();
-         worldObjects.push(new Cube(scene, new Vector3(random.generate(), height / 2, random.generate()), new Vector3(1, height, 1),0xff990f));
+         worldObjects.push(new Cube(scene, new Vector3(random.generate(), height / 2, random.generate()),
+         new Vector3(worldObjectScale, height, worldObjectScale),0xff990f));
     }
     var scale = Math.abs(min) + Math.abs(max);
     plane = new Plane(scene, new Vector2(scale, scale), 0xffff00, Math.PI / 2);
@@ -74,7 +78,8 @@ function init() {
     try {
        canvas = document.getElementById("glcanvas");
        renderer = new THREE.WebGLRenderer( { canvas: canvas, antialias: true} );
-       random = new Random(min, max);
+       // Make sure none of the objects are halfway off the plane:
+       random = new Random(min + worldObjectScale / 2, max - worldObjectScale / 2);
        keyboard = new KeyboardState();
     }
     catch (e) {
