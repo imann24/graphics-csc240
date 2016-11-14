@@ -32,6 +32,14 @@ WorldObject.prototype.lateSetup = function () {
      }
 }
 
+WorldObject.prototype.getWorldPosition = function () {
+     if (parent && parent.getWorldPosition) {
+          return Vector3.add(this.position, parent.getWorldPosition());
+     } else {
+          return this.position;
+     }
+}
+
 WorldObject.prototype.setPosition = function (position) {
      this.mesh.position.x = position.x;
      this.mesh.position.y= position.y;

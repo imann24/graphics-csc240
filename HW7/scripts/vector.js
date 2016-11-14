@@ -44,6 +44,13 @@ Vector3.prototype.toThree = function () {
      return new THREE.Vector3(this.x, this.y, this.z);
 }
 
+Vector3.add = function (vector1, vector2) {
+     return new Vector3(
+          vector1.x + vector2.x,
+          vector1.y + vector2.y,
+          vector1.z + vector2.z);
+}
+
 function Vector2 (x, y) {
      this.x = isNaN(x) ? 0 : x;
      this.y = isNaN(y) ? 0 : y;

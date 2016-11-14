@@ -47,8 +47,9 @@ GalacticBody.prototype.setOrbitAngle = function (absoluteAngle) {
      this.orbitAngle = absoluteAngle;
      // Wrap the rotation:
      this.orbitAngle %= FULL_ROTATION;
-     this.position.x = this.parent.position.x + this.offset * Math.cos(this.orbitAngle);
-     this.position.z = this.parent.position.z + this.offset * Math.sin(this.orbitAngle);
+     var parentPosition = this.parent.getWorldPosition();
+     this.position.x = parentPosition.x + this.offset * Math.cos(this.orbitAngle);
+     this.position.z = parentPosition.z + this.offset * Math.sin(this.orbitAngle);
      // this.setRotation(new Vector3(0, this.orbitAngle, 0));
 }
 
