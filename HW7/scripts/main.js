@@ -39,6 +39,11 @@ function createWorld() {
     scene.add(viewpointLight);
     worldObjects = [];
     player = new Player(scene, camera, canvas, playerSpeed, playerStrafeSpeed, playerLookSpeed);
+    createPlanets();
+}
+
+function createPlanets () {
+     var earth = new Planet(scene, new Vector(0, 0, 0), 5, "blue");
 }
 
 // Render the scene. This is called for each frame of the animation.

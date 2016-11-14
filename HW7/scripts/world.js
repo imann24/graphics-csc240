@@ -6,7 +6,7 @@
 
 function WorldObject () {}
 
-WorldObject.prototype.earlySteup = function (scene, origin, scale, colors) {
+WorldObject.prototype.earlySetup = function (scene, origin, scale, colors) {
      this.geometry = new THREE.Geometry();
      this.scene = scene;
      this.origin = origin;
