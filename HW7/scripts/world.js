@@ -12,6 +12,7 @@ WorldObject.prototype.earlySetup = function (scene, origin, scale, colors) {
      this.origin = origin;
      this.scale = scale;
      this.colors = colors;
+     this.children = [];
 }
 
 WorldObject.prototype.lateSetup = function () {
@@ -46,6 +47,28 @@ WorldObject.prototype.setOrigin = function () {
      p.x = o.x;
      p.y = o.y;
      p.z = o.z;
+}
+
+WorldObject.prototype.addChild = function (child) {
+     // Custom object logic:
+     this.children.push(child);
+     child.parent = this;
+     // THREE.js object logic:
+     this.mesh.add(child.mesh);
+}
+
+WorldObject.prototype.setParent = function (parent) {
+     this.parent = parent;
+     this.parent.addChild(this);
+}
+
+WorldObject.prototype.setRotation = function (rotationVector) {
+     this.mesh.rotation.set (
+          rotationVector.x,
+          rotationVector.y,
+          rotationVector.z
+     );
+     this.mesh.matrixWorldNeedsUpdate = true;
 }
 
 // Origin and scale should be Vector3 objects. Origin is the center of the base

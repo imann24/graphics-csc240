@@ -29,14 +29,12 @@ GalacticBody.prototype.setup = function (scene, origin, radius, colors) {
 
 // Sets the target for the orbit:
 GalacticBody.prototype.setOrbit = function (parent) {
-     this.parent = parent;
-     // TODO: Add some code to actually parent the corresponding THREE.js objects correctly
+     this.setParent(parent);
 }
 
 /**
 @param deltaAngle, should be in radians
 */
-
 GalacticBody.prototype.updateOrbitAngle  = function (deltaAngle) {
      this.setOrbitAngle(this.orbitAngle + deltaAngle);
 }
@@ -48,6 +46,7 @@ GalacticBody.prototype.setOrbitAngle = function (absoluteAngle) {
      this.orbitAngle = absoluteAngle;
      // Wrap the rotation:
      this.orbitAngle %= FULL_ROTATION;
+     this.setRotation(new Vector3(0, this.orbitAngle, 0));
 }
 
 function Star (scene, origin, radius, colors) {

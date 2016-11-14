@@ -30,6 +30,7 @@ var sunRadius = 10;
 // Earth Tuning:
 var earthRadius = 5;
 var earthDistanceFromSun = 30;
+var earthOrbitSpeed = 100;
 
 // Create the scene. This function is called once, as soon as the page loads.
 // The renderer has already been created before this function is called.
@@ -55,10 +56,13 @@ function createWorld() {
 
 function createStars () {
      sun = new Star(scene, Vector3.zero(), sunRadius, "yellow");
+     worldObjects.push(sun);
 }
 
 function createPlanets () {
      earth = new Planet(scene, new Vector3(earthDistanceFromSun, 0, 0), earthRadius, "blue");
+     earth.setOrbit(sun);
+     worldObjects.push(earth);
 }
 
 function createMoons () {
@@ -67,8 +71,10 @@ function createMoons () {
 
 // Render the scene. This is called for each frame of the animation.
 function render() {
-    requestAnimationFrame( render );
+    requestAnimationFrame(render);
     player.move();
+    earth.mesh.rotation.x += 0.1;
+    earth.updateOrbitAngle(earthOrbitSpeed);
     renderer.render(scene, camera);
 }
 
