@@ -20,6 +20,7 @@ GalacticBody.prototype.setup = function (scene, origin, radius, colors) {
      var scale = Vector3.one();
      scale.scale(radius * 2);
      this.earlySetup(scene, origin, scale, colors);
+     this.offset = origin.x;
      this.radius = radius;
      this.orbitAngle = 0;
      this.geometry = new THREE.SphereGeometry(this.radius, SEGMENTS, RINGS);
@@ -30,6 +31,7 @@ GalacticBody.prototype.setup = function (scene, origin, radius, colors) {
 // Sets the target for the orbit:
 GalacticBody.prototype.setOrbit = function (parent) {
      this.setParent(parent);
+     console.log(this.parent);
 }
 
 /**
@@ -46,7 +48,9 @@ GalacticBody.prototype.setOrbitAngle = function (absoluteAngle) {
      this.orbitAngle = absoluteAngle;
      // Wrap the rotation:
      this.orbitAngle %= FULL_ROTATION;
-     this.setRotation(new Vector3(0, this.orbitAngle, 0));
+     this.position.x = this.parent.position.x + this.offset * Math.cos(this.orbitAngle);
+     this.position.z = this.parent.position.z + this.offset * Math.sin(this.orbitAngle);
+     // this.setRotation(new Vector3(0, this.orbitAngle, 0));
 }
 
 function Star (scene, origin, radius, colors) {

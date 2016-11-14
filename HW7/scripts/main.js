@@ -27,7 +27,6 @@ var playerLookSpeed = 0.01;
 var worldObjectScale = 1;
 // Sun Tuning:
 var sunRadius = 10;
-var sunOrbitSpeed = 0.01;
 // Earth Tuning:
 var earthRadius = 5;
 var earthDistanceFromSun = 30;
@@ -35,6 +34,8 @@ var earthOrbitSpeed = 0.02;
 // Moon Tuning:
 var moonRadius = 2;
 var moonDistanceFromEarth = 20;
+var moonOrbitSpeed = 0.01;
+
 
 // Create the scene. This function is called once, as soon as the page loads.
 // The renderer has already been created before this function is called.
@@ -81,7 +82,7 @@ function render() {
     player.move();
     earth.mesh.rotation.x += 0.1;
     earth.updateOrbitAngle(earthOrbitSpeed);
-    sun.updateOrbitAngle(sunOrbitSpeed);
+    moon.updateOrbitAngle(moonOrbitSpeed);
     renderer.render(scene, camera);
 }
 

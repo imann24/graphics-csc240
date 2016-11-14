@@ -6,6 +6,15 @@
 
 function WorldObject () {}
 
+WorldObject.prototype = {
+     get position  () {
+          return this.mesh.position;
+     },
+     get rotation  () {
+          return this.mesh.rotation;
+     },
+}
+
 WorldObject.prototype.earlySetup = function (scene, origin, scale, colors) {
      this.geometry = new THREE.Geometry();
      this.scene = scene;
