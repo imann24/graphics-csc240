@@ -35,7 +35,7 @@ GalacticBody.prototype.setOrbit = function (parent) {
 /**
 @param deltaAngle, should be in radians
 */
-GalacticBody.prototype.updateOrbitAngle  = function (deltaAngle) {
+GalacticBody.prototype.updateOrbitAngle = function (deltaAngle) {
      this.setOrbitAngle(this.orbitAngle + deltaAngle);
 }
 
