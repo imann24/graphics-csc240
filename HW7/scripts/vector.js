@@ -21,10 +21,27 @@ Vector3.one = function () {
      return new Vector3(1, 1, 1);
 }
 
+Vector3.zero = function () {
+     return new Vector3(0, 0, 0);
+}
+
+Vector3.scalar = function (scalar) {
+     var vector = Vector3.one();
+     vector.scale(scalar);
+     return vector;
+}
+
 Vector3.prototype.scale = function (scalar) {
      this.x *= scalar;
      this.y *= scalar;
      this.z *= scalar;
+}
+
+/**
+@return Converts Vector3 into the THREE.js equivalent class
+*/
+Vector3.prototype.toThree = function () {
+     return new THREE.Vector3(this.x, this.y, this.z);
 }
 
 function Vector2 (x, y) {

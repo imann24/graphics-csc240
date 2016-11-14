@@ -17,6 +17,19 @@ WorldObject.prototype.earlySetup = function (scene, origin, scale, colors) {
 WorldObject.prototype.lateSetup = function () {
      this.createMesh();
      this.addToScene();
+     if (this.origin) {
+          this.setPositionToOrigin();
+     }
+}
+
+WorldObject.prototype.setPosition = function (position) {
+     this.mesh.position.x = position.x;
+     this.mesh.position.y= position.y;
+     this.mesh.position.z = position.z;
+}
+
+WorldObject.prototype.setPositionToOrigin = function () {
+     this.setPosition(this.origin);
 }
 
 WorldObject.prototype.createMesh = function () {

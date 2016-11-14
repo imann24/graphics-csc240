@@ -15,12 +15,21 @@ var keyboard;
 var worldObjects;
 var plane;
 var player;
+var earth;
+var moon;
+var sun;
+
 
 // Tuning:
 var playerSpeed = 1;
 var playerStrafeSpeed = 0.5;
 var playerLookSpeed = 0.01;
 var worldObjectScale = 1;
+// Sun Tuning:
+var sunRadius = 10;
+// Earth Tuning:
+var earthRadius = 5;
+var earthDistanceFromSun = 30;
 
 // Create the scene. This function is called once, as soon as the page loads.
 // The renderer has already been created before this function is called.
@@ -29,8 +38,8 @@ function createWorld() {
     scene = new THREE.Scene(); // Create a new scene which we can add objects to.
 
     // create a camera, sitting on the positive z-axis.  The camera is not part of the scene.
-    camera = new THREE.PerspectiveCamera(20, canvas.width / canvas.height, 1, 200);
-    camera.position.z = 10;
+    camera = new THREE.PerspectiveCamera(20, canvas.width / canvas.height, 1, 1000);
+    camera.position.z = 250;
 
     // create some lights and add them to the scene.
     scene.add( new THREE.DirectionalLight( 0xffffff, 0.4 ) ); // dim light shining from above
@@ -39,11 +48,21 @@ function createWorld() {
     scene.add(viewpointLight);
     worldObjects = [];
     player = new Player(scene, camera, canvas, playerSpeed, playerStrafeSpeed, playerLookSpeed);
+    createStars();
     createPlanets();
+    createMoons();
+}
+
+function createStars () {
+     sun = new Star(scene, Vector3.zero(), sunRadius, "yellow");
 }
 
 function createPlanets () {
-     var earth = new Planet(scene, new Vector(0, 0, 0), 5, "blue");
+     earth = new Planet(scene, new Vector3(earthDistanceFromSun, 0, 0), earthRadius, "blue");
+}
+
+function createMoons () {
+
 }
 
 // Render the scene. This is called for each frame of the animation.
