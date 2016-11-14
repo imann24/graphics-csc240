@@ -77,7 +77,7 @@ Player.prototype.applyMove = function (axis, velocity) {
 }
 
 Player.prototype.applyRotation = function (axisKey) {
-     var vector = new THREE.Vector3( 1, 0, 0 );
+     var vector = new THREE.Vector3(1, 0, 0);
      var angle;
      var axis;
      if (axisKey = "x") {

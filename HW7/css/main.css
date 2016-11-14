@@ -2,3 +2,12 @@
  * Author: Isaiah Mann
  * Description: Stylesheet for solar system
  */
+
+ img {
+      float: left;
+      height: 480px;
+ }
+ canvas {
+      margin-left: 200px;
+      float: left;
+ }

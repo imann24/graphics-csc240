@@ -31,7 +31,6 @@ GalacticBody.prototype.setup = function (scene, origin, radius, colors) {
 // Sets the target for the orbit:
 GalacticBody.prototype.setOrbit = function (parent) {
      this.setParent(parent);
-     console.log(this.parent);
 }
 
 /**
