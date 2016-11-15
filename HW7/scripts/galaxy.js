@@ -15,13 +15,14 @@ function GalacticBody (scene, origin, radius, colors) {}
 
 GalacticBody.prototype = new WorldObject();
 
-GalacticBody.prototype.setup = function (scene, origin, radius, colors) {
+GalacticBody.prototype.setup = function (scene, origin, radius, colors, orbitSpeed) {
      // Creates a uniforma scale of double the radius:
      var scale = Vector3.one();
      scale.scale(radius * 2);
      this.earlySetup(scene, origin, scale, colors);
      this.offset = origin.x;
      this.radius = radius;
+     this.orbitSpeed = orbitSpeed;
      this.orbitAngle = 0;
      this.geometry = new THREE.SphereGeometry(this.radius, SEGMENTS, RINGS);
      this.material = new THREE.MeshLambertMaterial({ color: this.colors});
@@ -31,6 +32,10 @@ GalacticBody.prototype.setup = function (scene, origin, radius, colors) {
 // Sets the target for the orbit:
 GalacticBody.prototype.setOrbit = function (parent) {
      this.setParent(parent);
+}
+
+GalacticBody.prototype.orbit = function () {
+     this.updateOrbitAngle(this.orbitSpeed);
 }
 
 /**
@@ -47,23 +52,20 @@ GalacticBody.prototype.setOrbitAngle = function (absoluteAngle) {
      this.orbitAngle = absoluteAngle;
      // Wrap the rotation:
      this.orbitAngle %= FULL_ROTATION;
-     var parentPosition = this.parent.getWorldPosition();
-     this.position.x = parentPosition.x + this.offset * Math.cos(this.orbitAngle);
-     this.position.z = parentPosition.z + this.offset * Math.sin(this.orbitAngle);
-     // this.setRotation(new Vector3(0, this.orbitAngle, 0));
+     this.parent.updateChildRotation(this, new Vector3(0, absoluteAngle, 0));
 }
 
-function Star (scene, origin, radius, colors) {
-     this.setup(scene, origin, radius, colors);
+function Star (scene, origin, radius, colors, orbitSpeed) {
+     this.setup(scene, origin, radius, colors, orbitSpeed);
 }
 Star.prototype = new GalacticBody();
 
-function Planet (scene, origin, radius, colors) {
-     this.setup(scene, origin, radius, colors);
+function Planet (scene, origin, radius, colors, orbitSpeed) {
+     this.setup(scene, origin, radius, colors, orbitSpeed);
 }
 Planet.prototype = new GalacticBody();
 
-function Moon (scene, origin, radius, colors) {
-     this.setup(scene, origin, radius, colors);
+function Moon (scene, origin, radius, colors, orbitSpeed) {
+     this.setup(scene, origin, radius, colors, orbitSpeed);
 }
 Moon.prototype = new GalacticBody();

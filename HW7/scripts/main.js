@@ -1,7 +1,7 @@
 /**
- * @author: Isaiah Mann
+ * @author: Isaiah Mann, Sara Mathieson (THREE.js Template)
  * @desc: Runs the H7 3D canvas (creating the galaxy)
- * @requires: KeyboardState.js, THREE.js, random.js, world.js, vector.js, player.js, galaxy.js
+ * @requires: KeyboardState.js, THREE.js, random.js, world.js, vector.js, player.js, galaxy.js, tuning.js
  */
 
 // THREE.js:
@@ -15,26 +15,18 @@ var keyboard;
 var worldObjects;
 var plane;
 var player;
+var mercury;
+var venus;
 var earth;
+var mars;
+var jupiter;
+var saturn;
+var uranus;
+var neptune;
+var pluto;
 var moon;
 var sun;
-
-
-// Tuning:
-var playerSpeed = 1;
-var playerStrafeSpeed = 0.5;
-var playerLookSpeed = 0.01;
-var worldObjectScale = 1;
-// Sun Tuning:
-var sunRadius = 10;
-// Earth Tuning:
-var earthRadius = 5;
-var earthDistanceFromSun = 30;
-var earthOrbitSpeed = 0.02;
-// Moon Tuning:
-var moonRadius = 2;
-var moonDistanceFromEarth = 20;
-var moonOrbitSpeed = 0.01;
+var planets;
 
 
 // Create the scene. This function is called once, as soon as the page loads.
@@ -60,14 +52,26 @@ function createWorld() {
 }
 
 function createStars () {
-     sun = new Star(scene, Vector3.zero(), sunRadius, "yellow");
+     sun = new Star(scene, Vector3.zero(), sunRadius, sunColor);
      worldObjects.push(sun);
 }
 
 function createPlanets () {
-     earth = new Planet(scene, new Vector3(earthDistanceFromSun, 0, 0), earthRadius, "blue");
-     earth.setOrbit(sun);
-     worldObjects.push(earth);
+     mercury = new Planet(scene, new Vector3(mercuryDistanceFromSun, 0, 0), mercuryRadius, mercuryColor, mercuryOrbitSpeed);
+     venus = new Planet(scene, new Vector(venusDistanceFromSun, 0, 0), venusRadius, venusColor, venusOrbitSpeed);
+     earth = new Planet(scene, new Vector3(earthDistanceFromSun, 0, 0), earthRadius, earthColor, earthOrbitSpeed);
+     mars = new Planet(scene, new Vector3(marsDistanceFromSun, 0, 0), earthRadius, earthColor, earthOrbitSpeed);
+     jupiter = new Planet(scene, new Vector3(jupiterDistanceFromSun, 0, 0), earthRadius, earthColor, earthOrbitSpeed);
+     saturn = new Planet(scene, new Vector3(saturnDistanceFromSun, 0, 0), earthRadius, earthColor, earthOrbitSpeed);
+     uranus = new Planet(scene, new Vector3(uranusDistanceFromSun, 0, 0), earthRadius, earthColor, earthOrbitSpeed);
+     neptune = new Planet(scene, new Vector3(neptuneDistanceFromSun, 0, 0), earthRadius, earthColor, earthOrbitSpeed);
+     pluto = new Planet(scene, new Vector3(plutoDistanceFromSun, 0, 0), earthRadius, earthColor, earthOrbitSpeed);
+     planets = [mercury, venus, earth, mars,
+          jupiter, saturn, uranus, neptune, pluto];
+     for (var i = 0; i < planets.length; i++) {
+          planets[i].setOrbit(sun);
+          worldObjects.push(planets[i]);
+     }
 }
 
 function createMoons () {
@@ -80,8 +84,9 @@ function createMoons () {
 function render() {
     requestAnimationFrame(render);
     player.move();
-    earth.mesh.rotation.x += 0.1;
-    earth.updateOrbitAngle(earthOrbitSpeed);
+    for (var i = 0; i < planets.length; i++) {
+         planets[i].orbit();
+    }
     moon.updateOrbitAngle(moonOrbitSpeed);
     renderer.render(scene, camera);
 }

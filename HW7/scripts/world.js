@@ -22,6 +22,8 @@ WorldObject.prototype.earlySetup = function (scene, origin, scale, colors) {
      this.scale = scale;
      this.colors = colors;
      this.children = [];
+     // Dictionary of transforms that children are childed to
+     this.childrenTransforms = {};
 }
 
 WorldObject.prototype.lateSetup = function () {
@@ -42,7 +44,7 @@ WorldObject.prototype.getWorldPosition = function () {
 
 WorldObject.prototype.setPosition = function (position) {
      this.mesh.position.x = position.x;
-     this.mesh.position.y= position.y;
+     this.mesh.position.y = position.y;
      this.mesh.position.z = position.z;
 }
 
@@ -69,9 +71,20 @@ WorldObject.prototype.setOrigin = function () {
 WorldObject.prototype.addChild = function (child) {
      // Custom object logic:
      this.children.push(child);
+     // Create a child object to hold the child:
+     this.childrenTransforms[child] = new THREE.Object3D();
      child.parent = this;
      // THREE.js object logic:
-     this.mesh.add(child.mesh);
+     this.mesh.add(this.childrenTransforms[child]);
+     // The child object is technically the grand child:
+     this.childrenTransforms[child].add(child.mesh);
+}
+
+WorldObject.prototype.updateChildRotation = function (child, rotationVector) {
+     var childTransform =  this.childrenTransforms[child];
+     childTransform.rotation.x = rotationVector.x;
+     childTransform.rotation.y = rotationVector.y;
+     childTransform.rotation.z = rotationVector.z;
 }
 
 WorldObject.prototype.setParent = function (parent) {
