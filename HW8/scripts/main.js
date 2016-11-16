@@ -1,6 +1,6 @@
 /**
  * @author: Isaiah Mann, Sara Mathieson (THREE.js Template)
- * @desc: Runs the H8 3D canvas (texutre mapping)
+ * @desc: Runs the HW8 3D canvas (texutre mapping)
  * @requires: THREE.js, random.js, world.js, vector.js, tuning.js
  */
 
@@ -30,7 +30,8 @@ function createWorld() {
          octahedron = new Octahedron(scene,
               new Vector3(0, 0, 0),
               Vector3.scalar(octahedronScale),
-              [0xffffff, 0x99ffff, 0xff99ff, 0xffff99, 0xffffff]);
+             uvCoordinates,
+             checkerBoardTexturePath);
 }
 
 // Render the scene. This is called for each frame of the animation.
