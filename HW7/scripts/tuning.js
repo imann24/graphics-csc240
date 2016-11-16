@@ -7,9 +7,9 @@
 /* Sun Size Scale: 1 Unit = 2,000km --> Sun drawn smaller to make planets more visible
  * Planet / Moon Size Scale: 1 Unit = 100km
  * Planet Distance Scale: 1 Unit = 90,000km
- * Moon Distance Scale: 1 Unit = 6,300,000km
- * Planet Orbit Speed Scale 1 Unit = 10,000,000mph
- * Moon Orbit Speed Scale 1 Unit = 1,000,000,000,000mph
+ * Moon Distance Scale From Earth: 1 Unit = 6,300,000km
+ * Planet Orbit Speed Scale: 1 Unit = 10,000,000mph
+ * Moon Orbit Speed Scale: 1 Unit = 1,000,000,000,000mph
  */
 
 // Player:

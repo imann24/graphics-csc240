@@ -11,3 +11,18 @@
       margin-left: 200px;
       float: left;
  }
+
+p, ul {
+     display: inline-block;
+     margin: 1.5em 20em;
+}
+
+ul {
+     margin-top: -3.5em;
+     line-height: 2em;
+}
+
+iframe {
+     width: 560;
+     margin: 1.5em 25em;
+}
