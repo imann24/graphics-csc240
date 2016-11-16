@@ -36,11 +36,10 @@ function createWorld() {
     scene = new THREE.Scene(); // Create a new scene which we can add objects to.
 
     // create a camera, sitting on the positive z-axis.  The camera is not part of the scene.
-    camera = new THREE.PerspectiveCamera(20, canvas.width / canvas.height, 1, 100000);
-    camera.position.z = 25000;
-    camera.position.x = 7500;
+    camera = new THREE.PerspectiveCamera(20, canvas.width / canvas.height, 1, 1000000);
+    camera.position.z = 2000;
+    camera.position.x = 1000;
     // create some lights and add them to the scene.
-    scene.add( new THREE.DirectionalLight( 0xffffff, 0.4 ) ); // dim light shining from above
     var viewpointLight = new THREE.DirectionalLight( 0xffffff, 0.8 );  // a light to shine in the direction the camera faces
     viewpointLight.position.set(0,0,1);  // shines down the z-axis
     scene.add(viewpointLight);
@@ -52,7 +51,7 @@ function createWorld() {
 }
 
 function createStars () {
-     sun = new Star(scene, Vector3.zero(), sunRadius, sunColor);
+     sun = new Star(scene, Vector3.zero(), sunRadius, sunColor, sunOpacity, sunBrightness, sunDistance);
      worldObjects.push(sun);
 }
 
@@ -84,7 +83,7 @@ function createPlanets () {
 }
 
 function createMoons () {
-     moon = new Moon(scene, new Vector3(earthDistanceFromSun + moonDistanceFromEarth, 0, 0), moonRadius, moonColor, moonOrbitSpeed);
+     moon = new Moon(scene, new Vector3(moonDistanceFromEarth, 0, 0), moonRadius, moonColor, moonOrbitSpeed, earthDistanceFromSun);
      moon.setOrbit(earth);
      worldObjects.push(moon);
 }

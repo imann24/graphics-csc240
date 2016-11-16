@@ -4,78 +4,82 @@
  * @see: Planet Stats: http://www.scalesolarsystem.66ghz.com/?i=1
  */
 
-/*
- * Size Scale: 1 Unit = 1,000km
- * Distance Scale: 1 Unit = 200,000km
- * Orbit Speed Scale 1 Unit = 10,000,000mph
+/* Sun Size Scale: 1 Unit = 2,000km --> Sun drawn smaller to make planets more visible
+ * Planet / Moon Size Scale: 1 Unit = 100km
+ * Planet Distance Scale: 1 Unit = 90,000km
+ * Moon Distance Scale: 1 Unit = 6,300,000km
+ * Planet Orbit Speed Scale 1 Unit = 10,000,000mph
+ * Moon Orbit Speed Scale 1 Unit = 1,000,000,000,000mph
  */
 
 // Player:
-var playerSpeed = 100;
-var playerStrafeSpeed = 50;
+var playerSpeed = 200;
+var playerStrafeSpeed = 100;
 var playerLookSpeed = 0.01;
 var worldObjectScale = 1;
 
 // Sun:
-var sunRadius = 696;
+var sunRadius = 348;
 var sunColor = "gold";
-
+var sunOpacity = 0.1;
+var sunBrightness = 100000;
+var sunDistance = 0;
 // Mercury:
-var mercuryRadius = 2.4;
-var mercuryDistanceFromSun = 289.675;
+var mercuryRadius = 24;
+var mercuryDistanceFromSun = 643.72222222;
 var mercuryOrbitSpeed = 0.0107082;
 var mercuryColor = "grey";
 
 // Venus
-var venusRadius = 6.05;
+var venusRadius = 60.5;
 var venusDistanceFromSun = 1081.1;
 var venusOrbitSpeed = 0.0078337;
 var venusColor = "moccasin";
 
 // Earth:
-var earthRadius = 6.35;
-var earthDistanceFromSun = 540.55;
+var earthRadius = 63.5;
+var earthDistanceFromSun = 1201.2222222;
 var earthOrbitSpeed = 0.0066616;
 var earthColor = "blue";
 
 // Earth's Moon:
-var moonRadius = 1.7375;
-var moonDistanceFromEarth = 1.922;
-var moonOrbitSpeed = 0.00000022861489;
+var moonRadius = 17.375;
+var moonDistanceFromEarth = 74.744444446;
+var moonOrbitSpeed = 0.022861489;
 var moonColor = "grey";
 
 // Mars:
-var marsRadius = 3.35;
-var marsDistanceFromSun = 1139.2;
+var marsRadius = 33.5;
+var marsDistanceFromSun = 2531.5555556;
 var marsOrbitSpeed = 0.0053859;
 var marsColor = "lightsalmon";
 
 // Jupiter:
-var jupiterRadius = 71.45;
-var jupiterDistanceFromSun = 1945.35;
+var jupiterRadius = 714.5;
+var jupiterDistanceFromSun = 4323;
 var jupiterOrbitSpeed = 0.0029236;
 var jupiterColor = "rosybrown";
 
 // Saturn:
-var saturnRadius = 58.219;
-var saturnDistanceFromSun = 7135;
+var saturnRadius = 582.19;
+var saturnDistanceFromSun = 15855.555556;
 var saturnOrbitSpeed = 0.0021676;
 var saturnColor = "wheat";
 
 // Uranus
-var uranusRadius = 23.47;
-var uranusDistanceFromSun = 14351.5;
+var uranusRadius = 234.7;
+var uranusDistanceFromSun = 31892.222222;
 var uranusOrbitSpeed = 0.0015234;
 var uranusColor = "darkturquoise";
 
 // Neptune
-var neptuneRadius = 22.7;
-var neptuneDistanceFromSun = 22499.5;
+var neptuneRadius = 227;
+var neptuneDistanceFromSun = 49998.888889;
 var neptuneOrbitSpeed = 0.0012147;
 var neptuneColor = "mediumblue";
 
 // Pluto
-var plutoRadius = 1.1;
-var plutoDistanceFromSun = 29565;
+var plutoRadius = 11;
+var plutoDistanceFromSun = 65700;
 var plutoOrbitSpeed = 0.0010438;
 var plutoColor = "sandybrown";
