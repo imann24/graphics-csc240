@@ -126,12 +126,12 @@ Pyramid.prototype.createVertices = function () {
 
 Pyramid.prototype.createFaces = function () {
      this.geometry.faces = [
-          new THREE.Face3( 3, 2, 1),  // one half of the bottom face
-          new THREE.Face3( 3, 1, 0),  // second half of the bottom face
-          new THREE.Face3( 3, 0, 4),  // remaining faces are the four sides
-          new THREE.Face3( 0, 1, 4),
-          new THREE.Face3( 1, 2, 4),
-          new THREE.Face3( 2, 3, 4)
+          new THREE.Face3(3, 2, 1),  // one half of the bottom face
+          new THREE.Face3(3, 1, 0),  // second half of the bottom face
+          new THREE.Face3(3, 0, 4),  // remaining faces are the four sides
+          new THREE.Face3(0, 1, 4),
+          new THREE.Face3(1, 2, 4),
+          new THREE.Face3(2, 3, 4)
      ];
 }
 

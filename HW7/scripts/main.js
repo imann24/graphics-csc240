@@ -36,9 +36,9 @@ function createWorld() {
     scene = new THREE.Scene(); // Create a new scene which we can add objects to.
 
     // create a camera, sitting on the positive z-axis.  The camera is not part of the scene.
-    camera = new THREE.PerspectiveCamera(20, canvas.width / canvas.height, 1, 1000);
-    camera.position.z = 250;
-
+    camera = new THREE.PerspectiveCamera(20, canvas.width / canvas.height, 1, 100000);
+    camera.position.z = 25000;
+    camera.position.x = 7500;
     // create some lights and add them to the scene.
     scene.add( new THREE.DirectionalLight( 0xffffff, 0.4 ) ); // dim light shining from above
     var viewpointLight = new THREE.DirectionalLight( 0xffffff, 0.8 );  // a light to shine in the direction the camera faces
@@ -58,14 +58,23 @@ function createStars () {
 
 function createPlanets () {
      mercury = new Planet(scene, new Vector3(mercuryDistanceFromSun, 0, 0), mercuryRadius, mercuryColor, mercuryOrbitSpeed);
-     venus = new Planet(scene, new Vector(venusDistanceFromSun, 0, 0), venusRadius, venusColor, venusOrbitSpeed);
+
+     venus = new Planet(scene, new Vector3(venusDistanceFromSun, 0, 0), venusRadius, venusColor, venusOrbitSpeed);
+
      earth = new Planet(scene, new Vector3(earthDistanceFromSun, 0, 0), earthRadius, earthColor, earthOrbitSpeed);
-     mars = new Planet(scene, new Vector3(marsDistanceFromSun, 0, 0), earthRadius, earthColor, earthOrbitSpeed);
-     jupiter = new Planet(scene, new Vector3(jupiterDistanceFromSun, 0, 0), earthRadius, earthColor, earthOrbitSpeed);
-     saturn = new Planet(scene, new Vector3(saturnDistanceFromSun, 0, 0), earthRadius, earthColor, earthOrbitSpeed);
-     uranus = new Planet(scene, new Vector3(uranusDistanceFromSun, 0, 0), earthRadius, earthColor, earthOrbitSpeed);
-     neptune = new Planet(scene, new Vector3(neptuneDistanceFromSun, 0, 0), earthRadius, earthColor, earthOrbitSpeed);
-     pluto = new Planet(scene, new Vector3(plutoDistanceFromSun, 0, 0), earthRadius, earthColor, earthOrbitSpeed);
+
+     mars = new Planet(scene, new Vector3(marsDistanceFromSun, 0, 0), marsRadius, marsColor, earthOrbitSpeed);
+
+     jupiter = new Planet(scene, new Vector3(jupiterDistanceFromSun, 0, 0), jupiterRadius, jupiterColor, jupiterOrbitSpeed);
+
+     saturn = new Planet(scene, new Vector3(saturnDistanceFromSun, 0, 0), saturnRadius, saturnColor, saturnOrbitSpeed);
+
+     uranus = new Planet(scene, new Vector3(uranusDistanceFromSun, 0, 0), uranusRadius, uranusColor, uranusOrbitSpeed);
+
+     neptune = new Planet(scene, new Vector3(neptuneDistanceFromSun, 0, 0), neptuneRadius, neptuneColor, neptuneOrbitSpeed);
+
+     pluto = new Planet(scene, new Vector3(plutoDistanceFromSun, 0, 0), plutoRadius, plutoColor, plutoOrbitSpeed);
+
      planets = [mercury, venus, earth, mars,
           jupiter, saturn, uranus, neptune, pluto];
      for (var i = 0; i < planets.length; i++) {
@@ -75,7 +84,7 @@ function createPlanets () {
 }
 
 function createMoons () {
-     moon = new Moon(scene, new Vector3(earthDistanceFromSun - moonDistanceFromEarth, 0, 0), moonRadius, "grey");
+     moon = new Moon(scene, new Vector3(earthDistanceFromSun + moonDistanceFromEarth, 0, 0), moonRadius, moonColor, moonOrbitSpeed);
      moon.setOrbit(earth);
      worldObjects.push(moon);
 }
@@ -87,7 +96,7 @@ function render() {
     for (var i = 0; i < planets.length; i++) {
          planets[i].orbit();
     }
-    moon.updateOrbitAngle(moonOrbitSpeed);
+    moon.orbit();
     renderer.render(scene, camera);
 }
 

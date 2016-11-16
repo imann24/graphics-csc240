@@ -52,7 +52,9 @@ GalacticBody.prototype.setOrbitAngle = function (absoluteAngle) {
      this.orbitAngle = absoluteAngle;
      // Wrap the rotation:
      this.orbitAngle %= FULL_ROTATION;
-     this.parent.updateChildRotation(this, new Vector3(0, absoluteAngle, 0));
+     // this.parent.updateChildRotation(this, new Vector3(0, absoluteAngle, 0));
+     this.position.x = this.parent.position.x + this.offset * Math.cos(this.orbitAngle);
+     this.position.z = this.parent.position.z + this.offset *   Math.sin(this.orbitAngle);
 }
 
 function Star (scene, origin, radius, colors, orbitSpeed) {
