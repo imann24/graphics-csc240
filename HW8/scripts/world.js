@@ -15,7 +15,7 @@ WorldObject.prototype = {
      },
 }
 
-WorldObject.prototype.earlySetup = function (scene, origin, scale, material, uvCoordinates) {
+WorldObject.prototype.earlySetup = function (scene, origin, scale, material, uvCoordinates, uvOrders) {
      this.geometry = new THREE.Geometry();
      this.scene = scene;
      this.origin = origin;
@@ -23,6 +23,7 @@ WorldObject.prototype.earlySetup = function (scene, origin, scale, material, uvC
      this.children = [];
      this.material = material;
      this.uvs = uvCoordinates;
+     this.uvOrders = uvOrders;
      // Dictionary of transforms that children are childed to
      this.childrenTransforms = {};
 }
@@ -47,6 +48,12 @@ WorldObject.prototype.setPosition = function (position) {
      this.mesh.position.x = position.x;
      this.mesh.position.y = position.y;
      this.mesh.position.z = position.z;
+}
+
+WorldObject.prototype.setRotation = function (rotation) {
+     this.rotation.x = rotation.x;
+     this.rotation.y = rotation.y;
+     this.rotation.z = rotation.z;
 }
 
 WorldObject.prototype.setPositionToOrigin = function () {
@@ -108,7 +115,20 @@ WorldObject.prototype.setMaterialFromTexture = function (texturePath) {
 
 WorldObject.prototype.loadMaterialFromTexture = function (texturePath) {
      var texture = THREE.ImageUtils.loadTexture(texturePath);
-     return new THREE.MeshPhongMaterial({map:texture});
+     return new THREE.MeshPhongMaterial({map:texture, side:THREE.DoubleSide});
+}
+
+WorldObject.prototype.setRepeatingMaterialFromTexture = function (texturePath, u, v) {
+     this.material = this.loadRepeatingMaterialFromTexture(texturePath, u, v);
+     console.log(this.material);
+}
+
+WorldObject.prototype.loadRepeatingMaterialFromTexture = function (texturePath, u, v) {
+     var texture = THREE.ImageUtils.loadTexture(texturePath);
+     texture.wrapS = THREE.RepeatWrapping;
+     texture.wrapT = THREE.RepeatWrapping;
+     texture.repeat.set(u, v);
+     return new THREE.MeshPhongMaterial({map:texture, side:THREE.DoubleSide});
 }
 
 WorldObject.prototype.createUVs = function (uvs) {
@@ -116,23 +136,24 @@ WorldObject.prototype.createUVs = function (uvs) {
 }
 
 // Origin and scale should be Vector3 objects. Origin is the center of the base
-function Pyramid (scene, origin, scale, material, uvCoordinates) {
-     this.earlySetup(scene, origin, scale, material, uvCoordinates);
+function Pyramid (scene, origin, scale, material, uvCoordinates, uvOrders) {
+     this.earlySetup(scene, origin, scale, material, uvCoordinates, uvOrders);
      this.createVertices();
      this.createFaces();
-     this.createUVs(this.uvs);
+     this.createUVs(this.uvs, this.uvOrders);
      this.lateSetup();
 }
 
 Pyramid.prototype = new WorldObject();
 
-Pyramid.prototype.createUVs = function (uvs) {
+// this.geometry.faceVertexUvs[0].push([uvs[0], uvs[0], uvs[0]]);
+Pyramid.prototype.createUVs = function (uvs, uvSets) {
      this.geometry.faceVertexUvs[0] = [];
-     this.geometry.faceVertexUvs[0].push([uvs[0], uvs[1], uvs[2]]);
-     this.geometry.faceVertexUvs[0].push([uvs[0], uvs[1], uvs[2]]);
-     // side faces
-     for (var i=0; i < 4; i++) {
-          this.geometry.faceVertexUvs[0].push([uvs[0], uvs[1], uvs[3]]);
+     for (var i = 0; i < uvSets.length; i++) {
+          this.geometry.faceVertexUvs[0].push(
+               [uvs[uvSets[i][0]],
+               uvs[uvSets[i][1]],
+               uvs[uvSets[i][2]]]);
      }
 }
 
@@ -176,31 +197,33 @@ Pyramid.prototype.createMaterial = function () {
      ]);
 }
 
-function Octahedron (scene, origin, scale, uvs, texturePath) {
-     this.transform = new THREE.Object3D();
+function Octahedron (scene, origin, scale, uvs, texturePath, topUVSets, bottomUVSets) {
+     this.mesh = new THREE.Object3D();
      this.material = this.loadMaterialFromTexture(texturePath);
      var pyramidScale = scale.copy();
-     pyramidScale.y /= 2;
-     this.topPyramid = new Pyramid(scene, origin, pyramidScale, this.material, uvs);
-     this.bottomPryamid = new Pyramid(scene, origin, pyramidScale, this.material, uvs);
+     pyramidScale.y /= 1.5;
+     this.topPyramid = new Pyramid(scene, Vector3.zero(), pyramidScale, this.material, uvs, topUVSets);
+     this.bottomPryamid = new Pyramid(scene, Vector3.zero(), pyramidScale, this.material, uvs, bottomUVSets);
      this.bottomPryamid.rotation.x = Math.PI;
-     this.transform.add(this.topPyramid.mesh);
-     this.transform.add(this.bottomPryamid.mesh);
+     this.mesh.add(this.topPyramid.mesh);
+     this.mesh.add(this.bottomPryamid.mesh);
      this.scene = scene;
-     this.scene.add(this.transform);
+     this.setPosition(origin);
+     this.scene.add(this.mesh);
 }
 
 Octahedron.prototype = new WorldObject();
 
-function Plane (scene, scale, color, angle) {
+function Plane (scene, scale, texturePath, angle, u, v) {
      this.scene = scene;
      this.scale = scale;
-     this.color = color;
+     this.setRepeatingMaterialFromTexture(texturePath, u, v);
      this.angle = angle;
      this.geometry = new THREE.PlaneGeometry(scale.x, scale.y);
-     this.material = new THREE.MeshBasicMaterial({color: this.color, side: THREE.DoubleSide});
+     // this.material = new THREE.MeshBasicMaterial({color: this.color, side: THREE.DoubleSide});
      this.lateSetup();
-     this.mesh.rotation.x += angle;
+     // this.mesh.rotation.x += angle;
+     this.setRotation(angle);
 }
 
 Plane.prototype = new WorldObject();
